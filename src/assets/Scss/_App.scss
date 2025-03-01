@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap');
+@import 'Sidenav';
+@import 'Login';
+@import 'Home';
+@import 'Table';
+@import 'Pagination';
+@import 'Statics';
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "cairo", serif;
+}
+:root{
+  --primary-color: #8a725dbe;
+  --body-color: #ebe2cd;
+  --third-color: #c2baa6;
+  --forth-color: #353535;
+}
+body{
+  overflow-x: hidden;
+  background-color: var(--body-color);
+  direction: rtl;
+}

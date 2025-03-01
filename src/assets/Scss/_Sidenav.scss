@@ -1,0 +1,99 @@
+section.sidenav{
+  width: 256px;
+  position: sticky;
+  top: 0;
+  left: 0;
+  border-left: 1px solid var(--third-color);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  background-color:transparent ;
+  padding: 3rem 0;
+  ul.ant-menu-root{
+    height: 100%;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    svg{
+      background-color: transparent;
+      border-radius: 12px;
+      padding: 0.5rem;
+      width: 35px;
+      height: 35px;
+    }
+    .ant-menu-submenu-selected>.ant-menu-submenu-title{
+      color: var(--primary-color);
+      font-weight: bold;
+      svg{
+        background-color: var(--primary-color);
+        color: #fff;
+      }
+    }
+    .ant-menu-item-only-child{
+      padding-right: 48px;
+      padding-left: 0;
+    }
+    .ant-menu-item-selected{
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+    // li {
+    //   ul{
+    //     // background: transparent !important;
+    //     li{
+    //       &:hover{
+    //         background-color: var(--third-color)!important;
+    //       }
+    //     }
+    //     .ant-menu-item-selected{
+    //       background-color: var(--third-color);
+    //     }
+    //     .ant-menu-item-only-child{
+    //       padding-right: 48px;
+    //       padding-left: 0;
+    //     }
+    //   }
+    // }
+    // .ant-menu-item, .ant-menu-submenu-title{
+    //   // background-color:transparent!important;
+    //   color: var(--forth-color);
+    //   font-size: 16px;
+    //   svg{
+    //     background-color: transparent;
+    //     border-radius: 12px;
+    //     padding: 0.5rem;
+    //     width: 40px;
+    //     height: 40px;
+    //   }
+    //   &:hover{
+    //     color: var(--forth-color);
+    //     svg{
+    //       background-color: var(--primary-color);
+    //       color: var(--forth-color);
+    //     }
+    //   }
+    // }
+    .ant-menu-item-selected{
+      background-color: transparent;
+      svg{
+        background-color: var(--primary-color);
+        color: var(--forth-color);
+      }
+    }
+  }
+  .logo-holder{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img{
+      width: 200px;
+    }
+    span{
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--forth-color);
+    }
+  }
+}

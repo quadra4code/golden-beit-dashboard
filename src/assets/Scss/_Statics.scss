@@ -1,0 +1,34 @@
+.chart {
+  width: 100%;
+  padding: 1rem 0;
+  .statics-cont {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    // gap: 2rem;
+    .static{
+      display: flex;
+      align-items: center;
+      background: linear-gradient(90deg, #958271be 0%, #ddd1b8 100%);
+      padding: 15px;
+      border-radius: 12px;
+      gap: 20px;
+      min-width: 250px;
+      svg{
+        font-size: 56px;
+        color: var(--primary-color);
+      }
+      h1{
+        display: flex;
+        align-items: center;
+        font-size: 36px;
+        svg{
+          font-size: 25px;
+        }
+      }
+      span{
+        font-size: 14px;
+      }
+    }
+  }
+}
