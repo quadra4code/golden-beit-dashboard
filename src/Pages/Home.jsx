@@ -4,11 +4,13 @@ import { AppContext } from '../Context/AppContext'
 import Table from '../Components/StaffTable'
 import { Statics } from '../Components/Statics'
 import { Outlet } from 'react-router-dom'
+import Popup from '../Components/Popup'
 
 const Home = () => {
   const {contextHolder} = useContext(AppContext)
   return (
     <main className='home'>
+      <Popup/>
       {contextHolder}
       <Sidebar/>
       <section className='content'>

@@ -3,9 +3,9 @@ import Pagination from './Pagination';
 import Loader from './Loader';
 import { AppContext } from '../Context/AppContext';
 import axios from 'axios';
-const StaffTable = () => {
+const ClientsTable = () => {
   // const { winnersData, loading } = useContext(AppContext);
-  const [paginatedUnits, setPaginatedUnits] = useState();
+  const [paginatedClients, setPaginatedClients] = useState();
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState();
   const [pagination, setPagination] = useState();
@@ -15,7 +15,7 @@ const StaffTable = () => {
   useEffect(() => {
     setLoading(true);
     axios
-    .post('https://golden-gate-three.vercel.app/dashboard/paginated-units',
+    .post('https://golden-gate-three.vercel.app/dashboard/paginated-clients',
       {},
       {
         headers: {
@@ -25,7 +25,7 @@ const StaffTable = () => {
     )
     .then((res) => {
       console.log(res.data);
-      setPaginatedUnits(res.data.data.all);
+      setPaginatedClients(res.data.data.all);
       setPagination(res.data.data.pagination);
       setLoading(false);
     })
@@ -50,7 +50,7 @@ const StaffTable = () => {
     )
       .then(res => {
         console.log(res.data);
-        setPaginatedUnits(res.data.data.all);
+        setPaginatedClients(res.data.data.all);
         setPagination(res.data.data.pagination)
       })
       .catch(err => {
@@ -67,7 +67,7 @@ const StaffTable = () => {
     setCurrentPage(1); 
   };
   // const filteredData = paginatedUnits && paginatedUnits.filter(item =>
-  //   item.title.toLowerCase().includes(searchTerm.toLowerCase())
+  //   item.first_name.toLowerCase().includes(searchTerm.toLowerCase())
   // );
   // const indexOfLastItem = currentPage * itemsPerPage;
   // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -93,23 +93,39 @@ const StaffTable = () => {
                 <thead>
                   <tr>
                     <th>المسلسل</th>
-                    <th>عنوان الوحدة</th>
-                    <th>سعر الوحدة</th>
-                    <th>تاريخ الطلب</th>
-                    <th>عدد الوحدات المطلوبة</th>
-                    <th>حالة الطلب</th>
+                    <th>الاسم</th>
+                    <th>اسم المستخدم</th>
+                    <th>البريد الإلكتروني</th>
+                    <th>أرقام الهاتف</th>
+                    <th>كود الدعوة</th>
+                    <th>الصلاحية</th>
+                    <th>توثيق الايميل</th>
+                    <th>حالة الحساب</th>
+                    <th>اّخر دخول</th>
+                    <th>تاريخ الدخول</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {paginatedUnits&& paginatedUnits.length > 0 ? (
-                    paginatedUnits.map((item, index) => (
+                  {paginatedClients&& paginatedClients.length > 0 ? (
+                    paginatedClients.map((item, index) => (
                       <tr key={index}>
                         <td>{item.id}</td>
-                        <td>{item.title}</td>
-                        <td>{item.price_obj.price_type} {item.price_obj.price_value}</td>
-                        <td>{item.created_at}</td>
-                        <td>{item.requests_count}</td>
-                        <td>{item.status_obj.name}</td>
+                        <td>{item.first_name} {item.last_name}</td>
+                        <td>{item.username}</td>
+                        <td>{item.email?item.email:'لا يوجد'}</td>
+                        <td>{item.phone_numbers_list.length>0?
+                          item.phone_numbers_list.map((phone)=>
+                          <><span key={phone.phone_number_id}>
+                              {phone.phone_number} {phone.phone_number_confirmed?'موثق':'غير موثق'}
+                            </span> <br/>
+                          </>):'لا يوجد'}
+                        </td>
+                        <td>{item.referral_code}</td>
+                        <td>{item.role?item.role:'لا يوجد'}</td>
+                        <td>{item.email_confirmed? 'موثق': 'غير موثق'}</td>
+                        <td>{item.is_active? 'مفعل': 'غير مفعل'}</td>
+                        <td>{item.last_login?item.last_login:'لا يوجد'}</td>
+                        <td>{item.date_joined?item.date_joined:'لا يوجد'}</td>
                       </tr>
                     ))
                   ) : (
@@ -132,4 +148,4 @@ const StaffTable = () => {
   );
 };
 
-export default StaffTable;
+export default ClientsTable;

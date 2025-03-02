@@ -4,11 +4,10 @@ main.home {
     width: calc(100% - 256px);
     display: flex;
     flex-direction: column;
-    align-items: center;
     padding: 1rem;
     gap: 2rem;
     .data-view{
       width: 100%;
     }
   }
-}
+}  

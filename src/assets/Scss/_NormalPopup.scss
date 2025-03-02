@@ -1,0 +1,120 @@
+/////////////// popup /////////////////
+main.popup {
+  background-color: #00000054;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100%;
+  height: 100lvh;
+  z-index: 1000;
+  &.active {
+    display: flex;
+  }
+  .popup_inner{
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 650px;
+    form.change-pass{
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      input,select{
+        padding: 8px;
+        border-radius: 8px;
+        outline: none;
+        border: 1px solid #ddd;
+        width: 100%;
+      }
+    }
+    .btns{
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      align-items: center;
+      .rate-btn{
+        background-color: #007bff;
+        &:hover {
+          background-color: #0057b3;
+        }
+      }
+      .close-btn{
+        background-color: #d40000;
+        &:hover {
+          background-color: #990000;
+        }
+      }
+      button{
+        color: #fff;
+        padding: 8px 15px;
+        border: none;
+        outline: none;
+        border-radius: 12px;
+        font-size: 14px;
+        min-width: 140px;
+        cursor: pointer;
+        align-self: center;
+        transition: .3s;
+      }  
+    }
+    .review-us {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      .stars{
+        display: flex;
+        gap: 5px;
+      }
+      textarea{
+        background-color: #eee;
+        padding: 8px;
+        outline: none;
+        border-radius: 8px;
+      }
+    }
+    h2{
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--text-color);
+    }
+    .wrapper{
+      background-color: #eee;
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      span{
+        display: block;
+        line-height: 1.5;
+        font-size: 22px;
+        background-color: #fff;
+        border-radius:12px;
+        width: 100%;
+        padding: 10px;
+      }
+    }
+  }
+  @media(max-width:780px) {
+    .popup_inner{
+      max-width: 360px;
+      button{
+        width: 100px;
+        font-size:16px ;
+      }
+      h2{
+        font-size: 20px;
+      }
+      .wrapper{
+        span{
+          font-size:12px ;
+        }
+      }
+    }
+  }
+}

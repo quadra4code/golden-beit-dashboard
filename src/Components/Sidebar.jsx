@@ -58,14 +58,14 @@ export const Sidebar = () => {
     },
     {
       key: '3',
-      icon: <MailOutlined />,
-      label: 'إدارة رسائل التواصل',
+      icon: <BsBuildings />,
+      label: 'إدارة  الوحدات',
       // onClick	:handleContactData
     },
     {
       key: '4',
-      icon: <BsBuildings />,
-      label: 'إدارة  الوحدات',
+      icon: <MailOutlined />,
+      label: 'إدارة رسائل التواصل',
       // onClick	:handleContactData
     },
     {
@@ -92,9 +92,15 @@ export const Sidebar = () => {
     else if(e.key === '1'){
       navigate('paginated-staff');
     }
-    // else if(e.key === '2'){
-    //   navigate('paginated-clients');
-    // }
+    else if(e.key === '2'){
+      navigate('paginated-clients');
+    }
+    else if(e.key === '3'){
+      navigate('paginated-units');
+    }
+    else if(e.key === '4'){
+      navigate('paginated-emails');
+    }
     else{
       navigate('/');
     }

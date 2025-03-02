@@ -31,35 +31,69 @@ main.table_page{
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    input {
-      padding: 6px 20px;
-      margin-bottom: 20px;
-      box-sizing: border-box;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 16px;
-      outline-color: var(--primary-color);
+    .table-header {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      .table-btn {
+        border:1px solid var(--primary-color);
+        background-color: transparent;
+        color: #333;
+        padding: 6px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: all 0.3s;
+        &:hover {
+          background-color: var(--primary-color);
+          color: white;
+        }
+      }
+      input {
+        padding: 6px 20px;
+        box-sizing: border-box;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+        outline-color: var(--primary-color);
+      }
     }
     .table-wrapper{
       overflow-x: auto;
-      width: 100%;
+      max-height: 500px;
+      margin-top: 20px;
       table {
         width: 100%;
         border-collapse: collapse;
+        thead{
+          position: sticky;
+          top: 0;
+
+        }
         th {
           background-color:  var(--primary-color);
           color: white;
           padding: 10px;
-          min-width: 80px;
+          min-width:140px;
+          &:last-child{
+            position: sticky;
+            left: 0;
+          }
         }
         td {
+          min-width:max-content;
           padding: 12px;
           text-align: center;
           border-bottom: 1px solid #ddd;
+          &:last-child{
+            position: sticky;
+            left: 0;
+            background-color: white;
+          }
         }
-        tr:nth-child(even) {
-          background-color: #f2f2f2;
-        }
+        // tr:nth-child(even) {
+        //   background-color: #f2f2f2;
+        // }
         tr:hover {
           background-color: #f1f1f1;
         }
