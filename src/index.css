@@ -137,6 +137,9 @@ main.home .content .data-view {
 
 main.table_page {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
 }
 main.table_page .container {
   background-color: white;
@@ -180,15 +183,14 @@ main.table_page .container .table-wrapper table {
   width: 100%;
   border-collapse: collapse;
 }
-main.table_page .container .table-wrapper table thead {
+main.table_page .container .table-wrapper table th {
   position: sticky;
   top: 0;
-}
-main.table_page .container .table-wrapper table th {
   background-color: var(--primary-color);
   color: white;
   padding: 10px;
   min-width: 140px;
+  z-index: 3;
 }
 main.table_page .container .table-wrapper table th:last-child {
   position: sticky;
@@ -200,8 +202,10 @@ main.table_page .container .table-wrapper table td {
   padding: 12px;
   text-align: center;
   border-bottom: 1px solid #ddd;
+  z-index: 1;
 }
 main.table_page .container .table-wrapper table td:last-child {
+  z-index: 2;
   position: sticky;
   left: 0;
   background-color: white;
@@ -250,7 +254,7 @@ main.table_page .container .table-wrapper table tr:hover {
 .chart .statics-cont .static {
   display: flex;
   align-items: center;
-  background: linear-gradient(90deg, rgba(149, 130, 113, 0.7450980392) 0%, #ddd1b8 100%);
+  background: linear-gradient(90deg, #ddd1b8 0%, rgba(149, 130, 113, 0.7450980392) 100%);
   padding: 15px;
   border-radius: 12px;
   gap: 20px;

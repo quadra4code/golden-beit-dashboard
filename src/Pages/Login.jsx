@@ -15,7 +15,7 @@ export const Login = () => {
       return;
     }
     axios
-    .post('https://golden-gate-three.vercel.app/accounts/login', {
+    .post('https://golden-gate-three.vercel.app/dashboard/staff-login', {
       username,
       password,
     })
@@ -39,7 +39,7 @@ export const Login = () => {
           <h1>من فضلك قم بإدخال بيانات الدخول</h1>
           <form onSubmit={handleLogin}>
             <input type="text" placeholder='رقم الهاتف' onChange={(e)=>{setUsername(e.target.value)}}/>
-            <input type="text" placeholder='كلمة المرور'onChange={(e)=>{setPassword(e.target.value)}}/>
+            <input type="password" placeholder='كلمة المرور'onChange={(e)=>{setPassword(e.target.value)}}/>
             <button>
               تسجيل الدخول
               <AiOutlineLogin />

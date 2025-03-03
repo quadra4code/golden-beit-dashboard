@@ -6,6 +6,7 @@ import { GoPlus } from "react-icons/go";
 import axios from 'axios';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Dropdown, message, Space } from 'antd';
+import { BsTrash } from "react-icons/bs";
 const StaffTable = () => {
   // const [paginatedStaff, setPaginatedStaff] = useState();
   const [searchTerm, setSearchTerm] = useState('');
@@ -31,7 +32,7 @@ const StaffTable = () => {
       setPagination(res.data.data.pagination);
       setLoading(false);
     })
-    .catch((err) => {
+    .catch((err) => { 
       console.log(err);
     })
     .finally(() => {
@@ -57,7 +58,7 @@ const StaffTable = () => {
   }, []);
   const handlePaginate = (pageNumber) => {
     setLoading(true);
-    axios.post('https://golden-gate-three.vercel.app/dashboard/paginated-units',
+    axios.post('https://golden-gate-three.vercel.app/dashboard/paginated-staff',
       {
         page_number:pageNumber
       },
@@ -89,40 +90,42 @@ const StaffTable = () => {
     setSearchTerm(event.target.value);
     setCurrentPage(1); 
   };
-  const filteredData = paginatedStaff && paginatedStaff.filter(item =>
-    item.first_name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData ? filteredData.slice(indexOfFirstItem, indexOfLastItem) : [];
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  // const filteredData = paginatedStaff && paginatedStaff.filter(item =>
+  //   item.first_name.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
+  // const indexOfLastItem = currentPage * itemsPerPage;
+  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // const currentItems = filteredData ? filteredData.slice(indexOfFirstItem, indexOfLastItem) : [];
+  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
   // const handleMenuClick = (e) => {
   //   message.info('Click on menu item.');
   //   console.log('click', e);
   // };
   const menuProps = (id) => ({
     items: [
+      // {
+      //   label: 'صلاحية الموظف',
+      //   key: '1',
+      //   icon: <UserOutlined />,
+      // },
       {
-        label: 'صلاحية الموظف',
+        label: paginatedStaff&& paginatedStaff.find((item) => item.id === id).is_active
+          ? 'إلغاء تفعيل الحساب'
+          : 'تفعيل الحساب',
         key: '1',
         icon: <UserOutlined />,
-      },
-      {
-        label: 'إلغاء / تفعيل الحساب',
-        key: '2',
-        icon: <UserOutlined />,
+        onClick: () => handleChangeAccountStatus(id),
       },
       {
         label: 'حذف الموظف',
-        key: '4',
-        icon: <UserOutlined />,
+        key: '2',
+        icon: <BsTrash />,
         onClick: () => handleDeleteEmployee(id),
         danger: true,
       },
     ],
   });
   const handleDeleteEmployee = (id) => {
-    setLoading(true);
     axios
     .delete(`https://golden-gate-three.vercel.app/dashboard/delete-staff/${id}`,
       {headers: { 'Authorization': `Bearer ${token}` },}
@@ -136,10 +139,27 @@ const StaffTable = () => {
       console.log(err);
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
-    .finally(() => {  
-      setLoading(false);
+  };
+  const handleChangeAccountStatus = (id) => {
+    axios
+    .get(`https://golden-gate-three.vercel.app/dashboard/toggle-user-status/${id}`,
+      {headers: { 'Authorization': `Bearer ${token}` },}
+    )
+    .then((res) => {
+      console.log(res.data);
+      setPaginatedStaff(prevStaff =>
+        prevStaff.map(item =>
+          item.id === id ? { ...item, is_active: !item.is_active } : item
+        )
+      );
+      openNotificationWithIcon('success',`${res.data.msg}`)
+    })
+    .catch((err) => {
+      console.log(err);
+      openNotificationWithIcon('error',`${err.response.data.msg}`)
     });
   };
+  console.log(paginatedStaff)
     return (
     <>
       {loading ? (
@@ -177,8 +197,8 @@ const StaffTable = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {currentItems.length > 0 ? (
-                    currentItems.map((item, index) => (
+                  {paginatedStaff&& paginatedStaff.length > 0 ? (
+                    paginatedStaff.map((item, index) => (
                       <tr key={index}>
                         <td>{item.id}</td>
                         <td>{item.first_name} {item.last_name}</td>

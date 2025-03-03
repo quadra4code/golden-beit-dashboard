@@ -4,10 +4,10 @@ import axios from 'axios';
 const Popup = () => {
   const [oldPass, setOldPass] = useState('');
   const [newPass, setNewPass] = useState('');
-  const [first_name, setFirst_name] = useState('');
+  const [first_name, setFirst_name] = useState(null);
   const [last_name, setLast_name] = useState('');
   const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(null);
   const [role_name, setRole_name] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
   const {token, handleUnAuth,isChangePass, setIsChangePass,

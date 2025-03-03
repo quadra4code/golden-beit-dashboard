@@ -15,7 +15,7 @@ const EmailsTable = () => {
   useEffect(() => {
     setLoading(true);
     axios
-    .post('https://golden-gate-three.vercel.app/dashboard/dashboard/paginated-contact-us',
+    .post('https://golden-gate-three.vercel.app/dashboard/paginated-contact-us',
       {},
       {
         headers: {
@@ -38,7 +38,7 @@ const EmailsTable = () => {
   }, []);
   const handlePaginate = (pageNumber) => {
     setLoading(true);
-    axios.post('https://golden-gate-three.vercel.app/dashboard/paginated-units',
+    axios.post('https://golden-gate-three.vercel.app/dashboard/paginated-contact-us',
       {
         page_number:pageNumber
       },
