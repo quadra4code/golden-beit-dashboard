@@ -74,7 +74,7 @@ main.table_page{
           background-color:  var(--primary-color);
           color: white;
           padding: 10px;
-          min-width:140px;
+          // min-width:140px;
           z-index: 3;
           &:last-child{
             position: sticky;
@@ -92,6 +92,17 @@ main.table_page{
             position: sticky;
             left: 0;
             background-color: white;
+          }
+          .state-span{
+            border-radius: 8px;
+            color: #fff;
+            padding: 2px 15px;
+            &.done{
+              background-color: #2dd06b;
+            }
+            &.still{
+              background-color: #2d77d0;
+            }
           }
         }
         // tr:nth-child(even) {

@@ -10,9 +10,16 @@ const Popup = () => {
   const [email, setEmail] = useState(null);
   const [role_name, setRole_name] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
-  const {token, handleUnAuth,isChangePass, setIsChangePass,
-        openNotificationWithIcon,isAddNewEmployee, setIsAddNewEmployee,
-        isOpenPopup, setIsOpenPopup, roles, handleAddNewEmployee} = useContext(AppContext);
+  const {
+    token, handleUnAuth,isChangePass,consultBody,consultTitle,
+    setIsChangePass,isAddArticle,createArticle,setConsultTitle,
+    openNotificationWithIcon,isAddNewEmployee,ArtTitle,setConsultBody,
+    setArtTitle,ArtId,isEditConsult,handleEditConsult,handleAddConsultChildren,
+    ArtBody, setArtBody,handleEditArticle,isEditArticle,isEditConsultChildren,
+    setConsultName,consultName,consultBrief,setConsultBrief,
+    isOpenPopup, setIsOpenPopup, roles, handleAddNewEmployee,
+    isConsult,createConsult,isConsultChildren,handleEditConsultChildren,
+  } = useContext(AppContext);
   const handleClose = ()=> {
     setIsOpenPopup(false);
   }
@@ -57,6 +64,71 @@ const Popup = () => {
         </form>
         <div className="btns">
           <button onClick={()=>handleAddNewEmployee(first_name,last_name,username,email,role_name)} className='rate-btn'>إضافة موظف</button>
+          <button onClick={handleClose} className='close-btn'>اغلاق</button>
+        </div>
+      </div>
+    </main>
+    )
+  }
+  if(isAddArticle){
+    return (
+    <main className={`popup ${isOpenPopup ? 'active' : ''}`}>
+      <div className='popup_inner'>
+        <form className='change-pass' onSubmit={handleChangePassReq}>
+          <input value={ArtTitle} type='text' required onChange={(e)=>setArtTitle(e.target.value)} placeholder='عنوان المقالة'/>
+          <textarea value={ArtBody}  rows='8' onChange={(e)=>setArtBody(e.target.value)} placeholder='نص المقالة'/>
+        </form>
+        <div className="btns">
+          <button onClick={()=>createArticle(ArtTitle,ArtBody)} className='rate-btn'>إضافة مقالة</button>
+          <button onClick={handleClose} className='close-btn'>اغلاق</button>
+        </div>
+      </div>
+    </main>
+    )
+  }
+  if(isEditArticle){
+    return (
+    <main className={`popup ${isOpenPopup ? 'active' : ''}`}>
+      <div className='popup_inner'>
+        <form className='change-pass' onSubmit={handleChangePassReq}>
+          <input value={ArtTitle} type='text' required onChange={(e)=>setArtTitle(e.target.value)} placeholder='عنوان المقالة'/>
+          <textarea value={ArtBody}  rows='8' onChange={(e)=>setArtBody(e.target.value)} placeholder='نص المقالة'/>
+        </form>
+        <div className="btns">
+          <button onClick={()=>handleEditArticle(ArtTitle,ArtBody)} className='rate-btn'> تعديل المقالة</button>
+          <button onClick={handleClose} className='close-btn'>اغلاق</button>
+        </div>
+      </div>
+    </main>
+    )
+  }
+  if(isConsultChildren){
+    return (
+    <main className={`popup ${isOpenPopup ? 'active' : ''}`}>
+      <div className='popup_inner'>
+        <form className='change-pass' onSubmit={handleChangePassReq}>
+          <input value={consultTitle} type='text' required onChange={(e)=>setConsultTitle(e.target.value)} placeholder='عنوان الاستشارة'/>
+          <textarea value={consultBody}  rows='8' onChange={(e)=>setConsultBody(e.target.value)} placeholder='نص الاستشارة'/>
+        </form>
+        <div className="btns">
+          <button onClick={isEditConsultChildren&&isConsultChildren? handleEditConsultChildren:handleAddConsultChildren} className='rate-btn'>حفظ</button>
+          <button onClick={handleClose} className='close-btn'>اغلاق</button>
+        </div>
+      </div>
+    </main>
+    )
+  }
+  // update-consult-type
+  if(isConsult){
+    return (
+    <main className={`popup ${isOpenPopup ? 'active' : ''}`}>
+      <div className='popup_inner'>
+        <form className='change-pass' onSubmit={handleChangePassReq}>
+          <input value={consultName} type='text' required onChange={(e)=>setConsultName(e.target.value)} placeholder='نوع الاستشارة'/>
+          <input value={consultBrief} type='text' required onChange={(e)=>setConsultBrief(e.target.value)} placeholder='بريف الاستشارة'/>
+        </form>
+        <div className="btns">
+          <button onClick={isEditConsult&&isConsult? handleEditConsult:createConsult} className='rate-btn'>حفظ</button>
           <button onClick={handleClose} className='close-btn'>اغلاق</button>
         </div>
       </div>

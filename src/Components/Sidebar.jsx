@@ -5,7 +5,11 @@ import { BsBuildings } from "react-icons/bs";
 import { BsClipboardData } from "react-icons/bs";
 import { MailOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
+import { AiOutlinePullRequest } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
+import { GrArticle } from "react-icons/gr";
+import { AiOutlinePartition } from "react-icons/ai";
+
 export const Sidebar = () => {
   const navigate = useNavigate();
   const handleParentApplicationsData = ()=> {
@@ -64,12 +68,30 @@ export const Sidebar = () => {
     },
     {
       key: '4',
+      icon: <AiOutlinePullRequest />,
+      label: 'إدارة الطلبات',
+      // onClick	:handleContactData
+    },
+    {
+      key: '5',
+      icon: <GrArticle />,
+      label: 'إدارة  المقالات',
+      // onClick	:handleContactData
+    },
+    {
+      key: '6',
+      icon: <AiOutlinePartition />,
+      label: 'إدارة  الاستشارات',
+      // onClick	:handleContactData
+    },
+    {
+      key: '7',
       icon: <MailOutlined />,
       label: 'إدارة رسائل التواصل',
       // onClick	:handleContactData
     },
     {
-      key: '5',
+      key: '8',
       icon: <MdLogout />,
       label: 'Log Out',
       // onClick	:handleLogout
@@ -86,7 +108,7 @@ export const Sidebar = () => {
   };
   const onClick = (e) => {
     console.log('click ', e);
-    if(e.key === '5'){
+    if(e.key === '8'){
       handleLogout();
     }
     else if(e.key === '1'){
@@ -99,6 +121,15 @@ export const Sidebar = () => {
       navigate('paginated-units');
     }
     else if(e.key === '4'){
+      navigate('paginated-orders');
+    }
+    else if(e.key === '5'){
+      navigate('paginated-articles');
+    }
+    else if(e.key === '6'){
+      navigate('paginated-consultations');
+    }
+    else if(e.key === '7'){
       navigate('paginated-emails');
     }
     else{

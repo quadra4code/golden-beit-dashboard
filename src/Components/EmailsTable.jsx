@@ -3,15 +3,20 @@ import Pagination from './Pagination';
 import Loader from './Loader';
 import { AppContext } from '../Context/AppContext';
 import axios from 'axios';
+import { DownOutlined,  } from '@ant-design/icons';
+import { Button, Dropdown, Space } from 'antd';
+import { IoMdDoneAll } from "react-icons/io";
+import { BsTrash } from "react-icons/bs";
+
 const EmailsTable = () => {
-  // const { winnersData, loading } = useContext(AppContext);
   const [paginatedEmails, setPaginatedEmails] = useState();
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState();
   const [pagination, setPagination] = useState();
   const [currentPage, setCurrentPage] = useState(1);
+  const [isDone, setIsDone] = useState(false);
   const itemsPerPage = 20;
-  const {token} = useContext(AppContext);
+  const {token, openNotificationWithIcon} = useContext(AppContext);
   useEffect(() => {
     setLoading(true);
     axios
@@ -66,6 +71,65 @@ const EmailsTable = () => {
     setSearchTerm(event.target.value);
     setCurrentPage(1); 
   };
+  const handleChangeStatus = (id) => {
+    axios
+    .get(`https://golden-gate-three.vercel.app/dashboard/solve-contact-us/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
+    )
+    .then((res)=>{
+      console.log(res);
+      setPaginatedEmails(prevEmail =>
+        prevEmail.map(item=> 
+          item.id === id ? {...item, status:{...item.status, name:'تم الحل'} }:item
+        )
+      )
+      setIsDone(true)
+      openNotificationWithIcon('success',`${res.data.msg}`)
+    })
+    .catch((err)=>{
+      openNotificationWithIcon('error',`${err.response.data.msg}`)
+      console.log(err)
+    })
+  }
+  const handleDeleteMsg = (id) => {
+    axios
+    .delete(`https://golden-gate-three.vercel.app/dashboard/delete-contact-us/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
+    )
+    .then((res)=>{
+      paginatedEmails.filter((item) => item.id !== id)
+      openNotificationWithIcon('success',`${res.data.msg}`)
+    })
+    .catch((err)=>{
+      openNotificationWithIcon('error',`${err.response.data.msg}`)
+      console.log(err)
+    })
+  }
+  const menuProps = (id) => ({
+    items: [
+      {
+        label: 'حل الرسالة',
+        key: '1',
+        icon: <IoMdDoneAll />,
+        onClick: () => handleChangeStatus(id),
+      },
+      {
+        label: 'حذف الرسالة',
+        key: '2',
+        icon: <BsTrash />,
+        danger:true,
+        onClick: () => handleDeleteMsg(id),
+      },
+    ],
+  });
   // const filteredData = paginatedUnits && paginatedUnits.filter(item =>
   //   item.first_name.toLowerCase().includes(searchTerm.toLowerCase())
   // );
@@ -99,6 +163,7 @@ const EmailsTable = () => {
                     <th>تاريخ الانشاء</th>
                     <th>تاريخ التحديث</th>
                     <th>حالة الرسالة</th>
+                    <th>خيارات</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -111,7 +176,19 @@ const EmailsTable = () => {
                         <td>{item.email?item.email:'لا يوجد' }</td>
                         <td>{item.created_at}</td>
                         <td>{item.updated_at}</td>
-                        <td>{item.status.name}</td>
+                        <td>
+                          <span className={`state-span ${item.status.name==='تم الحل'?'done':'still'}`}>{item.status.name}</span>
+                        </td>
+                        <td>
+                          <Dropdown menu={menuProps(item.id)}>
+                            <Button>
+                              <Space>
+                                خيارات
+                                <DownOutlined />
+                              </Space>
+                            </Button>
+                          </Dropdown>
+                        </td>
                       </tr>
                     ))
                   ) : (

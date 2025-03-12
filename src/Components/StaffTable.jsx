@@ -5,7 +5,7 @@ import { AppContext } from '../Context/AppContext';
 import { GoPlus } from "react-icons/go";
 import axios from 'axios';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Dropdown, message, Space } from 'antd';
+import { Button, Dropdown, message, Space, Select } from 'antd';
 import { BsTrash } from "react-icons/bs";
 const StaffTable = () => {
   // const [paginatedStaff, setPaginatedStaff] = useState();
@@ -13,8 +13,9 @@ const StaffTable = () => {
   const [loading, setLoading] = useState();
   const [pagination, setPagination] = useState();
   const [currentPage, setCurrentPage] = useState(1);
+  const [options, setOptions] = useState();
   const itemsPerPage = 20;
-  const { paginatedStaff, setPaginatedStaff, token, setIsAddNewEmployee, setIsOpenPopup, setRoles} = useContext(AppContext);
+  const { paginatedStaff, setPaginatedStaff, token, setIsAddNewEmployee, setIsOpenPopup, setRoles, roles,openNotificationWithIcon} = useContext(AppContext);
   useEffect(() => {
     setLoading(true);
     axios
@@ -46,8 +47,12 @@ const StaffTable = () => {
       {headers: { 'Authorization': `Bearer ${token}` },}
     )
     .then((res) => {
-      setRoles(res.data.data);
       console.log(res.data);
+      const formattedOptions = res.data.data.map((item) => ({
+        value: item.id,
+        label: item.name,
+      }));
+      setOptions(formattedOptions);
     })
     .catch((err) => {
       if(err.status===401){
@@ -160,6 +165,24 @@ const StaffTable = () => {
     });
   };
   console.log(paginatedStaff)
+  const handleChangeUnitStatus = (perm_id,staff_id) => {
+    const selectedOption = options.find(opt=>opt.value === perm_id).label
+    console.log(selectedOption,staff_id);
+    axios
+    .patch('https://golden-gate-three.vercel.app/dashboard/change-staff-permissions',
+      {
+        staff_id,
+        perms_list:[selectedOption]
+      },
+      {headers:{Authorization:`Bearer ${token}`}}
+    )
+    .then((res)=>{
+      openNotificationWithIcon('success',`${res.data.msg}`)
+    })
+    .catch((err)=>{
+      openNotificationWithIcon('error',`${err.response.data.msg}`)
+    })
+  }
     return (
     <>
       {loading ? (
@@ -174,7 +197,7 @@ const StaffTable = () => {
                 onChange={handleSearch}
                 placeholder="ابحث باسمك ..."
               />
-              <button className='table-btn' onClick={() => handleOpenPopup(true)}>
+              <button className='table-btn' onClick={handleOpenPopup}>
                 <GoPlus/>
                 إضافة موظف جديد
               </button>
@@ -211,7 +234,18 @@ const StaffTable = () => {
                           </>):'لا يوجد'}
                         </td>
                         <td>{item.email}</td>
-                        <td>{item.role}</td>
+                        <td>
+                          <Select
+                            defaultValue={item.role}
+                            style={{
+                              width: 120,
+                            }}
+                            // onChange={handleChangeUnitStatus}
+                            onChange={(value)=>handleChangeUnitStatus(value,item.id)}
+                            options={options}
+                          />
+                        </td>
+                        {/* <td>{item.role}</td> */}
                         <td>{item.email_confirmed? 'موثق': 'غير موثق'}</td>
                         <td>{item.is_active? 'مفعل': 'غير مفعل'}</td>
                         <td>{item.last_login}</td>

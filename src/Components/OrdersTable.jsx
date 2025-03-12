@@ -9,8 +9,8 @@ import { BsTrash } from "react-icons/bs";
 import { LuGitPullRequestArrow } from "react-icons/lu";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
 import { FaPen } from "react-icons/fa";
-const StaffTable = () => {
-  const [paginatedUnits, setPaginatedUnits] = useState();
+const OrdersTable = () => {
+  const [paginatedOrders, setPaginatedOrders] = useState();
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState();
   const [pagination, setPagination] = useState();
@@ -22,7 +22,7 @@ const StaffTable = () => {
   useEffect(() => {
     setLoading(true);
     axios
-    .post('https://golden-gate-three.vercel.app/dashboard/paginated-units',
+    .post('https://golden-gate-three.vercel.app/dashboard/paginated-requests',
       {},
       {
         headers: {
@@ -32,7 +32,7 @@ const StaffTable = () => {
     )
     .then((res) => {
       console.log(res.data);
-      setPaginatedUnits(res.data.data.all);
+      setPaginatedOrders(res.data.data.all);
       setUnitStatuses(res.data.data.statuses);
       setPagination(res.data.data.pagination);
       setLoading(false);
@@ -44,7 +44,6 @@ const StaffTable = () => {
       setLoading(false);
     });
   }, []);
-  console.log(unitStatuses);
   const handlePaginate = (pageNumber) => {
     setLoading(true);
     axios.post('https://golden-gate-three.vercel.app/dashboard/paginated-units',
@@ -59,7 +58,7 @@ const StaffTable = () => {
     )
       .then(res => {
         console.log(res.data);
-        setPaginatedUnits(res.data.data.all);
+        setPaginatedOrders(res.data.data.all);
         setPagination(res.data.data.pagination)
       })
       .catch(err => {
@@ -75,7 +74,7 @@ const StaffTable = () => {
     setSearchTerm(event.target.value);
     setCurrentPage(1); 
   };
-  // const filteredData = paginatedUnits && paginatedUnits.filter(item =>
+  // const filteredData = paginatedOrders && paginatedOrders.filter(item =>
   //   item.title.toLowerCase().includes(searchTerm.toLowerCase())
   // );
   // const indexOfLastItem = currentPage * itemsPerPage;
@@ -85,11 +84,11 @@ const StaffTable = () => {
   const menuProps = (id) => ({
     items: [
       {
-        label: paginatedUnits&& paginatedUnits.find((item) => item.id === id).hidden
+        label: paginatedOrders&& paginatedOrders.find((item) => item.id === id).hidden
           ? 'إظهار الوحدة'
           : 'إخفاء الوحدة',
           key: '1',
-        icon: paginatedUnits&& paginatedUnits.find((item) => item.id === id).hidden
+        icon: paginatedOrders&& paginatedOrders.find((item) => item.id === id).hidden
           ? <FaRegEye />
           : <FaRegEyeSlash />,
         // icon: <FaRegEyeSlash />,
@@ -123,7 +122,7 @@ const StaffTable = () => {
     )
     .then((res) => {
       console.log(res.data);
-      setPaginatedUnits(paginatedUnits.filter((item) => item.id !== id));
+      setPaginatedOrders(paginatedOrders.filter((item) => item.id !== id));
       openNotificationWithIcon('success',`${res.data.msg}`)
     })
     .catch((err) => {
@@ -138,7 +137,7 @@ const StaffTable = () => {
     )
     .then((res) => {
       console.log(res.data);
-      setPaginatedUnits(prevUnit =>
+      setPaginatedOrders(prevUnit =>
         prevUnit.map(item =>
           item.id === id ? { ...item, hidden: !item.hidden } : item
         )
@@ -172,7 +171,7 @@ const StaffTable = () => {
     )
     .then((res) => {
       console.log(res.data);
-      setPaginatedUnits(prevUnit =>
+      setPaginatedOrders(prevUnit =>
         prevUnit.map(item =>
           item.id === item_id ? { ...item, status_obj: res.data } : item
         )
@@ -205,7 +204,8 @@ const StaffTable = () => {
                   <tr>
                     <th>المسلسل</th>
                     <th>عنوان الوحدة</th>
-                    <th>سعر الوحدة</th>
+                    <th>سعر الاوفر</th>
+                    <th>إجمالى السعر</th>
                     <th>تاريخ الطلب</th>
                     <th>عدد الوحدات المطلوبة</th>
                     <th>حالة الطلب</th>
@@ -214,12 +214,13 @@ const StaffTable = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {paginatedUnits&& paginatedUnits.length > 0 ? (
-                    paginatedUnits.map((item, index) => (
+                  {paginatedOrders&& paginatedOrders.length > 0 ? (
+                    paginatedOrders.map((item, index) => (
                       <tr key={index}>
                         <td>{item.id}</td>
                         <td>{item.title}</td>
-                        <td>{item.over_price_obj.price_type} {item.over_price_obj.price_value}</td>
+                        <td>{item.over_price_obj.currency} {item.over_price_obj.price_value}</td>
+                        <td>{item.total_price_obj.currency} {item.total_price_obj.price_value}</td>
                         <td>{item.created_at}</td>
                         <td>{item.requests_count}</td>
                         {/* <td>{item.status_obj.name}</td> */}
@@ -330,4 +331,4 @@ const StaffTable = () => {
   );
 };
 
-export default StaffTable;
+export default OrdersTable;

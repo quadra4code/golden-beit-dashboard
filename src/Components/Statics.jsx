@@ -1,14 +1,29 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import { BsClipboardData } from "react-icons/bs";
 import { MdAttachMoney } from "react-icons/md";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { MdMarkEmailUnread } from "react-icons/md";
+import axios from 'axios';
+import { AppContext } from '../Context/AppContext';
 export const Statics = () => {
+  const {token}= useContext(AppContext)
   const statics = {
     donationsAmount: 1000,
     totalApplications: 100,
     totalEmails: 100
   }
+  useEffect(()=>{
+    axios
+    .get('https://golden-gate-three.vercel.app/dashboard/main-statistics',
+      {headers:{ 'Authorization' : `Bearer ${token}`}}
+    )
+    .then((res)=>{
+      console.log(res.data.data);
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+  })
   return (
     <div className="statics-cont">
       <div className='static'>
