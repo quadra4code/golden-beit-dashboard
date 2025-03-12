@@ -9,11 +9,12 @@ import { Login } from './Pages/Login';
 import ArticlesTable from './Components/ArticlesTable';
 import OrdersTable from './Components/OrdersTable';
 import ConsultationsTable from './Components/ConsultationsTable';
+import ProtectedRoute from './Components/ProtectedRoute';
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<Home/>}>
+        <Route path='/' element={<ProtectedRoute><Home/></ProtectedRoute>}>
           <Route path="paginated-staff" element={<StaffTable />} />
           <Route path="paginated-units" element={<UnitsTable />} />
           <Route path="paginated-articles" element={<ArticlesTable />} />
