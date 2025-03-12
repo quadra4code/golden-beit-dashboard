@@ -1,5 +1,5 @@
 import React from 'react';
-import { Triangle } from 'react-loader-spinner'
+// import { Triangle } from 'react-loader-spinner'
 import BarLoader from "react-spinners/BarLoader";
 const Loader = () => {
   return (
