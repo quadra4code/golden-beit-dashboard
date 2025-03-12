@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import logo from '../assets/images/LOGO-(2).png';
 import { MdLogout } from "react-icons/md";
+import logo from '../assets/Images/LOGO-(2).png'
 import { BsBuildings } from "react-icons/bs";
 import { BsClipboardData } from "react-icons/bs";
 import { MailOutlined } from '@ant-design/icons';
