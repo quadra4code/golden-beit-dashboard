@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import logo from '../assets/images/LOGO (2).png';
+import logo from '../assets/images/LOGO-(2).png';
 import { MdLogout } from "react-icons/md";
 import { BsBuildings } from "react-icons/bs";
 import { BsClipboardData } from "react-icons/bs";
