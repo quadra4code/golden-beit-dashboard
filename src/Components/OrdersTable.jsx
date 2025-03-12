@@ -7,8 +7,6 @@ import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Space, Select } from 'antd';
 import { BsTrash } from "react-icons/bs";
 import { LuGitPullRequestArrow } from "react-icons/lu";
-import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
-import { FaPen } from "react-icons/fa";
 const OrdersTable = () => {
   const [paginatedOrders, setPaginatedOrders] = useState();
   const [searchTerm, setSearchTerm] = useState('');
@@ -84,31 +82,14 @@ const OrdersTable = () => {
   const menuProps = (id) => ({
     items: [
       {
-        label: paginatedOrders&& paginatedOrders.find((item) => item.id === id).hidden
-          ? 'إظهار الوحدة'
-          : 'إخفاء الوحدة',
-          key: '1',
-        icon: paginatedOrders&& paginatedOrders.find((item) => item.id === id).hidden
-          ? <FaRegEye />
-          : <FaRegEyeSlash />,
-        // icon: <FaRegEyeSlash />,
-        onClick: () => handleHideUnit(id),
-      },
-      {
-        label: 'طلبات الوحدة',
-        key: '2',
+        label: 'تغيير حالة الطلب',
+        key: '1',
         icon: <LuGitPullRequestArrow />,
         onClick: () => handleGetUnitReq(id),
       },
-      // {
-      //   label: ' تغيير حالة الوحدة',
-      //   key: '3',
-      //   icon: <FaPen />,
-      //   onClick: () => handleChangeUnitStatus(id),
-      // },
       {
-        label: 'حذف الوحدة',
-        key: '3',
+        label: 'رفض الطلب',
+        key: '2',
         icon: <BsTrash />,
         onClick: () => handleDeleteUnit(id),
         danger: true,
@@ -195,7 +176,7 @@ const OrdersTable = () => {
                 type="text"
                 value={searchTerm}
                 onChange={handleSearch}
-                placeholder="ابحث باسمك ..."
+                placeholder="ابحث  ..."
               />
             </div>
             <div className="table-wrapper">
@@ -207,9 +188,14 @@ const OrdersTable = () => {
                     <th>سعر الاوفر</th>
                     <th>إجمالى السعر</th>
                     <th>تاريخ الطلب</th>
-                    <th>عدد الوحدات المطلوبة</th>
                     <th>حالة الطلب</th>
-                    <th>الظهور</th>
+                    <th>الاسم</th>
+                    <th>اسم المستخدم</th>
+                    <th>البريد الالكتروني</th>
+                    <th>توثيق البريد الالكتروني</th>
+                    <th>حالة الحساب</th>
+                    <th>اخر دخول</th>
+                    <th>أرقام الهاتف</th>
                     <th>خيارات</th>
                   </tr>
                 </thead>
@@ -222,7 +208,6 @@ const OrdersTable = () => {
                         <td>{item.over_price_obj.currency} {item.over_price_obj.price_value}</td>
                         <td>{item.total_price_obj.currency} {item.total_price_obj.price_value}</td>
                         <td>{item.created_at}</td>
-                        <td>{item.requests_count}</td>
                         {/* <td>{item.status_obj.name}</td> */}
                         <td>
                           <Select
@@ -234,7 +219,19 @@ const OrdersTable = () => {
                             options={unitStatuses}
                           />
                         </td>
-                        <td>{item.hidden? 'مخفي': 'ظاهر'}</td>
+                        <td>{item.first_name} {item.last_name}</td>
+                        <td>{item.username}</td>
+                        <td>{item.email?item.email:'لا يوجد'}</td>
+                        <td>{item.phone_numbers_list.length>0?
+                          item.phone_numbers_list.map((phone)=>
+                          <><span key={phone.phone_number_id}>
+                              {phone.phone_number} {phone.phone_number_confirmed?'موثق':'غير موثق'}
+                            </span> <br/>
+                          </>):'لا يوجد'}
+                        </td>
+                        <td>{item.email_confirmed? 'موثق': 'غير موثق'}</td>
+                        <td>{item.is_active? 'مفعل': 'غير مفعل'}</td>
+                        <td>{item.last_login?item.last_login:'لا يوجد'}</td>
                         <td>
                           <Dropdown menu={menuProps(item.id)}>
                             <Button>
@@ -260,70 +257,6 @@ const OrdersTable = () => {
               paginate={handlePaginate}
               currentPage={currentPage}
             />
-          </div>
-          <div className="container">
-            <div className="table-header">
-              <h1>طلبات الوحدة</h1>
-            </div>
-            <div className="table-wrapper">
-              <table>
-                <thead>
-                  <tr>
-                    <th>المسلسل</th>
-                    <th>الاسم</th>
-                    <th>اسم المستخدم</th>
-                    <th>البريد الإلكتروني</th>
-                    <th>أرقام الهاتف</th>
-                    <th>كود الدعوة</th>
-                    <th>الصلاحية</th>
-                    <th>توثيق الايميل</th>
-                    <th>حالة الحساب</th>
-                    <th>اّخر دخول</th>
-                    <th>تاريخ الدخول</th>
-                    {/* <th>خيارات</th> */}
-                  </tr>
-                </thead>
-                <tbody>
-                  {unitRequests&& unitRequests.length > 0 ? (
-                    unitRequests.map((item, index) => (
-                      <tr key={index}>
-                        <td>{item.user_id}</td>
-                        <td>{item.first_name} {item.last_name}</td>
-                        <td>{item.username}</td>
-                        <td>{item.email?item.email:'لا يوجد'}</td>
-                        <td>{item.phone_numbers_list.length>0?
-                          item.phone_numbers_list.map((phone)=>
-                          <><span key={phone.phone_number_id}>
-                              {phone.phone_number} {phone.phone_number_confirmed?'موثق':'غير موثق'}
-                            </span> <br/>
-                          </>):'لا يوجد'}
-                        </td>
-                        <td>{item.referral_code}</td>
-                        <td>{item.role?item.role:'لا يوجد'}</td>
-                        <td>{item.email_confirmed? 'موثق': 'غير موثق'}</td>
-                        <td>{item.is_active? 'مفعل': 'غير مفعل'}</td>
-                        <td>{item.last_login?item.last_login:'لا يوجد'}</td>
-                        <td>{item.date_joined?item.date_joined:'لا يوجد'}</td>
-                        {/* <td>
-                          <Dropdown menu={menuProps(item.id)}>
-                            <Button>
-                              <Space>
-                                خيارات
-                                <DownOutlined />
-                              </Space>
-                            </Button>
-                          </Dropdown>
-                        </td> */}
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="5">No data available</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
           </div>
         </main>
       )}
