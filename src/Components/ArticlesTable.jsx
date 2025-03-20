@@ -12,7 +12,7 @@ import { FaPen } from "react-icons/fa";
 const ArticlesTable = () => {
   // const { winnersData, loading } = useContext(AppContext);
   const [loading, setLoading] = useState();
-  const {setIsEditArticle,setArtId,setArtBody,setArtTitle,paginatedArticles,setPaginatedArticles,token, openNotificationWithIcon,setIsOpenPopup, setIsAddArticle} = useContext(AppContext);
+  const {handleUnAuth, setIsEditArticle,setArtId,setArtBody,setArtTitle,paginatedArticles,setPaginatedArticles,token, openNotificationWithIcon,setIsOpenPopup, setIsAddArticle} = useContext(AppContext);
   useEffect(() => {
     setLoading(true);
     axios
@@ -29,6 +29,9 @@ const ArticlesTable = () => {
       setLoading(false);
     })
     .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
     })
     .finally(() => {
@@ -62,6 +65,9 @@ const ArticlesTable = () => {
       setPaginatedArticles(paginatedArticles.filter((item) => item.id !== id))
     })
     .catch((err)=>{
+      if(err.status===401){
+        handleUnAuth()
+      }
       openNotificationWithIcon('error',`${err.response.data.msg}`)
       console.log(err)
     })
@@ -82,6 +88,9 @@ const ArticlesTable = () => {
       openNotificationWithIcon('success',`${res.data.msg}`)
     })
     .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })

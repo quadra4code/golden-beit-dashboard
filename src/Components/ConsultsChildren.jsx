@@ -11,6 +11,7 @@ import { FaPen } from "react-icons/fa";
 
 const ConsultsChildren = () => {
   const {
+    handleUnAuth, 
     paginatedConsultChildren, 
     setIsConsultChildren,
     setPaginatedConsultChildren,
@@ -79,6 +80,9 @@ const ConsultsChildren = () => {
       openNotificationWithIcon('success',`${res.data.msg}`)
     })
     .catch((err)=>{
+      if(err.status===401){
+        handleUnAuth()
+      }
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
   };
@@ -96,6 +100,9 @@ const ConsultsChildren = () => {
       setPaginatedConsultChildren(paginatedConsultChildren.filter((item) => item.id !== id))
     })
     .catch((err)=>{
+      if(err.status===401){
+        handleUnAuth()
+      }
       openNotificationWithIcon('error',`${err.response.data.msg}`)
       console.log(err)
     })

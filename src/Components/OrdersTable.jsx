@@ -16,7 +16,7 @@ const OrdersTable = () => {
   const [unitStatuses, setUnitStatuses] = useState();
   const [unitRequests, setUnitRequests] = useState();
   const itemsPerPage = 20;
-  const {token, openNotificationWithIcon,} = useContext(AppContext);
+  const {handleUnAuth, token, openNotificationWithIcon,} = useContext(AppContext);
   useEffect(() => {
     setLoading(true);
     axios
@@ -36,6 +36,9 @@ const OrdersTable = () => {
       setLoading(false);
     })
     .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
     })
     .finally(() => {
@@ -60,6 +63,9 @@ const OrdersTable = () => {
         setPagination(res.data.data.pagination)
       })
       .catch(err => {
+        if(err.status===401){
+          handleUnAuth()
+        }  
         console.log(err);
       })
       .finally(() => {
@@ -107,6 +113,9 @@ const OrdersTable = () => {
       openNotificationWithIcon('success',`${res.data.msg}`)
     })
     .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
@@ -126,6 +135,9 @@ const OrdersTable = () => {
       openNotificationWithIcon('success',`${res.data.msg}`)
     })
     .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
@@ -140,6 +152,9 @@ const OrdersTable = () => {
       setUnitRequests(res.data.data);
     })
     .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
@@ -160,6 +175,9 @@ const OrdersTable = () => {
       openNotificationWithIcon('success',`${res.data.msg}`)
     })
     .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     });
@@ -190,10 +208,10 @@ const OrdersTable = () => {
                     <th>تاريخ الطلب</th>
                     <th>حالة الطلب</th>
                     <th>الاسم</th>
-                    <th>اسم المستخدم</th>
+                    {/* <th>اسم المستخدم</th>
                     <th>البريد الالكتروني</th>
                     <th>توثيق البريد الالكتروني</th>
-                    <th>حالة الحساب</th>
+                    <th>حالة الحساب</th> */}
                     <th>اخر دخول</th>
                     <th>أرقام الهاتف</th>
                     <th>خيارات</th>
@@ -220,8 +238,9 @@ const OrdersTable = () => {
                           />
                         </td>
                         <td>{item.first_name} {item.last_name}</td>
-                        <td>{item.username}</td>
-                        <td>{item.email?item.email:'لا يوجد'}</td>
+                        {/* <td>{item.username}</td>
+                        <td>{item.email?item.email:'لا يوجد'}</td> */}
+                        <td>{item.last_login?item.last_login:'لا يوجد'}</td>
                         <td>{item.phone_numbers_list.length>0?
                           item.phone_numbers_list.map((phone)=>
                           <><span key={phone.phone_number_id}>
@@ -229,9 +248,8 @@ const OrdersTable = () => {
                             </span> <br/>
                           </>):'لا يوجد'}
                         </td>
-                        <td>{item.email_confirmed? 'موثق': 'غير موثق'}</td>
-                        <td>{item.is_active? 'مفعل': 'غير مفعل'}</td>
-                        <td>{item.last_login?item.last_login:'لا يوجد'}</td>
+                        {/* <td>{item.email_confirmed? 'موثق': 'غير موثق'}</td>
+                        <td>{item.is_active? 'مفعل': 'غير مفعل'}</td> */}
                         <td>
                           <Dropdown menu={menuProps(item.id)}>
                             <Button>

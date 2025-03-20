@@ -14,7 +14,7 @@ const ClientsTable = () => {
   const [pagination, setPagination] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
-  const {token} = useContext(AppContext);
+  const {handleUnAuth, token} = useContext(AppContext);
   
   useEffect(() => {
     setLoading(true);
@@ -34,6 +34,9 @@ const ClientsTable = () => {
       setLoading(false);
     })
     .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
     })
     .finally(() => {
@@ -58,6 +61,9 @@ const ClientsTable = () => {
         setPagination(res.data.data.pagination)
       })
       .catch(err => {
+        if(err.status===401){
+          handleUnAuth()
+        }  
         console.log(err);
       })
       .finally(() => {
@@ -107,6 +113,9 @@ const ClientsTable = () => {
       openNotificationWithIcon('success',`${res.data.msg}`)
     })
     .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
@@ -126,6 +135,9 @@ const ClientsTable = () => {
       openNotificationWithIcon('success',`${res.data.msg}`)
     })
     .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     });

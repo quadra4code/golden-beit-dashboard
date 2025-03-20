@@ -6,7 +6,7 @@ import { MdMarkEmailUnread } from "react-icons/md";
 import axios from 'axios';
 import { AppContext } from '../Context/AppContext';
 export const Statics = () => {
-  const {token}= useContext(AppContext)
+  const {handleUnAuth, token}= useContext(AppContext)
   const statics = {
     donationsAmount: 1000,
     totalApplications: 100,
@@ -21,6 +21,9 @@ export const Statics = () => {
       console.log(res.data.data);
     })
     .catch((err)=>{
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
     })
   })

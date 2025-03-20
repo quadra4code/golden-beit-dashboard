@@ -10,7 +10,7 @@ import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
 import { FaPen } from "react-icons/fa";
 import ConsultsChildren from './ConsultsChildren';
 const ConsultationsTable = () => {
-  const {paginatedConsultChildren, setPaginatedConsultChildren,setIsEditConsult,setConsultBrief,setIsConsult,paginatedConsults,setConsultId, setPaginatedConsults,token, openNotificationWithIcon,setIsOpenPopup,setConsultName } = useContext(AppContext);
+  const {handleUnAuth, paginatedConsultChildren, setPaginatedConsultChildren,setIsEditConsult,setConsultBrief,setIsConsult,paginatedConsults,setConsultId, setPaginatedConsults,token, openNotificationWithIcon,setIsOpenPopup,setConsultName } = useContext(AppContext);
   const [loading, setLoading] = useState();
   useEffect(() => {
     setLoading(true);
@@ -28,6 +28,9 @@ const ConsultationsTable = () => {
       setLoading(false);
     })
     .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
     })
     .finally(() => {
@@ -61,6 +64,9 @@ const ConsultationsTable = () => {
       setPaginatedConsults(paginatedConsults.filter((item) => item.id !== id))
     })
     .catch((err)=>{
+      if(err.status===401){
+        handleUnAuth()
+      }
       openNotificationWithIcon('error',`${err.response.data.msg}`)
       console.log(err)
     })
@@ -81,6 +87,9 @@ const ConsultationsTable = () => {
       openNotificationWithIcon('success',`${res.data.msg}`)
     })
     .catch((err)=>{
+      if(err.status===401){
+        handleUnAuth()
+      }
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
   };
@@ -96,6 +105,9 @@ const ConsultationsTable = () => {
       openNotificationWithIcon('success',`${res.data.msg}`)
     })
     .catch((err)=>{
+      if(err.status===401){
+        handleUnAuth()
+      }
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
   };

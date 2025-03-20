@@ -22,7 +22,7 @@ export const Login = () => {
     .then((res) => {
       console.log(res.data);
       const response = res.data.data;
-      localStorage.setItem('token', response.access_token);
+      localStorage.setItem('golden-beit-dashboard-token', response.access_token);
       localStorage.setItem('name', response.user.full_name);
       window.location.href = `/`
     })

@@ -15,7 +15,7 @@ const StaffTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [options, setOptions] = useState();
   const itemsPerPage = 20;
-  const { paginatedStaff, setPaginatedStaff, token, setIsAddNewEmployee, setIsOpenPopup, setRoles, roles,openNotificationWithIcon} = useContext(AppContext);
+  const {handleUnAuth,  paginatedStaff, setPaginatedStaff, token, setIsAddNewEmployee, setIsOpenPopup, setRoles, roles,openNotificationWithIcon} = useContext(AppContext);
   useEffect(() => {
     setLoading(true);
     axios
@@ -34,6 +34,9 @@ const StaffTable = () => {
       setLoading(false);
     })
     .catch((err) => { 
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
     })
     .finally(() => {
@@ -79,6 +82,9 @@ const StaffTable = () => {
         setPagination(res.data.data.pagination)
       })
       .catch(err => {
+        if(err.status===401){
+          handleUnAuth()
+        }  
         console.log(err);
       })
       .finally(() => {
@@ -141,6 +147,9 @@ const StaffTable = () => {
       openNotificationWithIcon('success',`${res.data.msg}`)
     })
     .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
@@ -160,6 +169,9 @@ const StaffTable = () => {
       openNotificationWithIcon('success',`${res.data.msg}`)
     })
     .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     });
@@ -180,6 +192,9 @@ const StaffTable = () => {
       openNotificationWithIcon('success',`${res.data.msg}`)
     })
     .catch((err)=>{
+      if(err.status===401){
+        handleUnAuth()
+      }
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
   }

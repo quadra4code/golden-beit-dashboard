@@ -16,7 +16,7 @@ const EmailsTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isDone, setIsDone] = useState(false);
   const itemsPerPage = 20;
-  const {token, openNotificationWithIcon} = useContext(AppContext);
+  const {handleUnAuth, token, openNotificationWithIcon} = useContext(AppContext);
   useEffect(() => {
     setLoading(true);
     axios
@@ -35,6 +35,9 @@ const EmailsTable = () => {
       setLoading(false);
     })
     .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
     })
     .finally(() => {
@@ -59,6 +62,9 @@ const EmailsTable = () => {
         setPagination(res.data.data.pagination)
       })
       .catch(err => {
+        if(err.status===401){
+          handleUnAuth()
+        }  
         console.log(err);
       })
       .finally(() => {
@@ -91,6 +97,9 @@ const EmailsTable = () => {
       openNotificationWithIcon('success',`${res.data.msg}`)
     })
     .catch((err)=>{
+      if(err.status===401){
+        handleUnAuth()
+      }
       openNotificationWithIcon('error',`${err.response.data.msg}`)
       console.log(err)
     })
@@ -109,6 +118,9 @@ const EmailsTable = () => {
       openNotificationWithIcon('success',`${res.data.msg}`)
     })
     .catch((err)=>{
+      if(err.status===401){
+        handleUnAuth()
+      }
       openNotificationWithIcon('error',`${err.response.data.msg}`)
       console.log(err)
     })
@@ -162,6 +174,7 @@ const EmailsTable = () => {
                     <th>البريد الإلكتروني</th>
                     <th>تاريخ الانشاء</th>
                     <th>تاريخ التحديث</th>
+                    <th> محتوى الرسالة</th>
                     <th>حالة الرسالة</th>
                     <th>خيارات</th>
                   </tr>
@@ -175,6 +188,7 @@ const EmailsTable = () => {
                         <td>{item.phone_number}</td>
                         <td>{item.email?item.email:'لا يوجد' }</td>
                         <td>{item.created_at}</td>
+                        <td>{item.message}</td>
                         <td>{item.updated_at}</td>
                         <td>
                           <span className={`state-span ${item.status.name==='تم الحل'?'done':'still'}`}>{item.status.name}</span>

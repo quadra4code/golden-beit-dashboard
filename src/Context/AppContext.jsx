@@ -28,7 +28,7 @@ const AppProvider = ({children}) => {
   const [paginatedArticles, setPaginatedArticles] = useState();
   const [roles, setRoles] = useState();
   const [isChangePass, setIsChangePass] = useState(false);
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('golden-beit-dashboard-token');
   const openNotificationWithIcon = (type, message, description) => {
     api[type]({
       message,
@@ -36,13 +36,13 @@ const AppProvider = ({children}) => {
     });
   };
   const handleUnAuth = async() => {
-    localStorage.removeItem('token')
+    localStorage.removeItem('golden-beit-dashboard-token')
     localStorage.removeItem('name')
     await setTimeout(()=>{
       openNotificationWithIcon('error','قم يتسجيل الدخول من جديد ');
     },3000)
     localStorage.removeItem('token');
-    window.location.href = `${window.location.origin}/login`
+    window.location.href = `/login`
   }
   const handleAddNewEmployee = (first_name, last_name, username, email, role_name) => {
     axios

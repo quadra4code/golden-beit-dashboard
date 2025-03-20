@@ -18,7 +18,7 @@ const StaffTable = () => {
   const [unitStatuses, setUnitStatuses] = useState();
   const [unitRequests, setUnitRequests] = useState();
   const itemsPerPage = 20;
-  const {token, openNotificationWithIcon,} = useContext(AppContext);
+  const {handleUnAuth, token, openNotificationWithIcon,} = useContext(AppContext);
   useEffect(() => {
     setLoading(true);
     axios
@@ -38,6 +38,9 @@ const StaffTable = () => {
       setLoading(false);
     })
     .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
     })
     .finally(() => {
@@ -63,6 +66,9 @@ const StaffTable = () => {
         setPagination(res.data.data.pagination)
       })
       .catch(err => {
+        if(err.status===401){
+          handleUnAuth()
+        }  
         console.log(err);
       })
       .finally(() => {
@@ -127,6 +133,9 @@ const StaffTable = () => {
       openNotificationWithIcon('success',`${res.data.msg}`)
     })
     .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
@@ -146,6 +155,9 @@ const StaffTable = () => {
       openNotificationWithIcon('success',`${res.data.msg}`)
     })
     .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
@@ -160,6 +172,9 @@ const StaffTable = () => {
       setUnitRequests(res.data.data);
     })
     .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
@@ -180,6 +195,9 @@ const StaffTable = () => {
       openNotificationWithIcon('success',`${res.data.msg}`)
     })
     .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
       console.log(err);
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     });
@@ -205,10 +223,11 @@ const StaffTable = () => {
                   <tr>
                     <th>المسلسل</th>
                     <th>عنوان الوحدة</th>
-                    <th>سعر الوحدة</th>
-                    <th>تاريخ الطلب</th>
-                    <th>عدد الوحدات المطلوبة</th>
-                    <th>حالة الطلب</th>
+                    <th>الاوفر</th>
+                    <th>الاجمالى</th>
+                    <th>اخر تحديث</th>
+                    <th>عدد الطلبات</th>
+                    <th>حالة الوحدة</th>
                     <th>الظهور</th>
                     <th>خيارات</th>
                   </tr>
@@ -219,7 +238,8 @@ const StaffTable = () => {
                       <tr key={index}>
                         <td>{item.id}</td>
                         <td>{item.title}</td>
-                        <td>{item.over_price_obj.price_type} {item.over_price_obj.price_value}</td>
+                        <td>{item.over_price_obj.price_value}</td>
+                        <td>{item.total_price_obj.price_value}</td>
                         <td>{item.created_at}</td>
                         <td>{item.requests_count}</td>
                         {/* <td>{item.status_obj.name}</td> */}
