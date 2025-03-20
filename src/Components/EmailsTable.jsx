@@ -188,8 +188,8 @@ const EmailsTable = () => {
                         <td>{item.phone_number}</td>
                         <td>{item.email?item.email:'لا يوجد' }</td>
                         <td>{item.created_at}</td>
-                        <td>{item.message}</td>
                         <td>{item.updated_at}</td>
+                        <td>{item.message}</td>
                         <td>
                           <span className={`state-span ${item.status.name==='تم الحل'?'done':'still'}`}>{item.status.name}</span>
                         </td>
