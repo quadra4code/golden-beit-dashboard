@@ -20,7 +20,7 @@ const OrdersTable = () => {
   useEffect(() => {
     setLoading(true);
     axios
-    .post('https://golden-gate-three.vercel.app/dashboard/paginated-requests',
+    .post('https://api.goldenbeit.com/dashboard/paginated-requests',
       {},
       {
         headers: {
@@ -47,7 +47,7 @@ const OrdersTable = () => {
   }, []);
   const handlePaginate = (pageNumber) => {
     setLoading(true);
-    axios.post('https://golden-gate-three.vercel.app/dashboard/paginated-units',
+    axios.post('https://api.goldenbeit.com/dashboard/paginated-units',
       {
         page_number:pageNumber
       },
@@ -104,7 +104,7 @@ const OrdersTable = () => {
   });
   const handleDeleteUnit = (id) => {
     axios
-    .delete(`https://golden-gate-three.vercel.app/core/delete-unit/${id}`,
+    .delete(`https://api.goldenbeit.com/core/delete-unit/${id}`,
       {headers: { 'Authorization': `Bearer ${token}` },}
     )
     .then((res) => {
@@ -122,7 +122,7 @@ const OrdersTable = () => {
   };
   const handleHideUnit = (id) => {
     axios
-    .get(`https://golden-gate-three.vercel.app/dashboard/toggle-unit-hide/${id}`,
+    .get(`https://api.goldenbeit.com/dashboard/toggle-unit-hide/${id}`,
       {headers: { 'Authorization': `Bearer ${token}` },}
     )
     .then((res) => {
@@ -144,7 +144,7 @@ const OrdersTable = () => {
   };
   const handleGetUnitReq = (id) => {
     axios
-    .get(`https://golden-gate-three.vercel.app/dashboard/unit-requests-user/${id}`,
+    .get(`https://api.goldenbeit.com/dashboard/unit-requests-user/${id}`,
       {headers: { 'Authorization': `Bearer ${token}` },}
     )
     .then((res) => {
@@ -162,7 +162,7 @@ const OrdersTable = () => {
   const handleChangeUnitStatus = (status_id,item_id) => {
     console.log(status_id,item_id);
     axios
-    .get(`https://golden-gate-three.vercel.app/dashboard/update-unit-status/${item_id}/${status_id}`,
+    .get(`https://api.goldenbeit.com/dashboard/update-unit-status/${item_id}/${status_id}`,
       {headers: { 'Authorization': `Bearer ${token}` },}
     )
     .then((res) => {

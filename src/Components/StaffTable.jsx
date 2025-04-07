@@ -19,7 +19,7 @@ const StaffTable = () => {
   useEffect(() => {
     setLoading(true);
     axios
-    .post('https://golden-gate-three.vercel.app/dashboard/paginated-staff',
+    .post('https://api.goldenbeit.com/dashboard/paginated-staff',
       {},
       {
         headers: {
@@ -46,7 +46,7 @@ const StaffTable = () => {
   useEffect(() => {
     setLoading(true);
     axios
-    .get('https://golden-gate-three.vercel.app/dashboard/staff-roles',
+    .get('https://api.goldenbeit.com/dashboard/staff-roles',
       {headers: { 'Authorization': `Bearer ${token}` },}
     )
     .then((res) => {
@@ -66,7 +66,7 @@ const StaffTable = () => {
   }, []);
   const handlePaginate = (pageNumber) => {
     setLoading(true);
-    axios.post('https://golden-gate-three.vercel.app/dashboard/paginated-staff',
+    axios.post('https://api.goldenbeit.com/dashboard/paginated-staff',
       {
         page_number:pageNumber
       },
@@ -138,7 +138,7 @@ const StaffTable = () => {
   });
   const handleDeleteEmployee = (id) => {
     axios
-    .delete(`https://golden-gate-three.vercel.app/dashboard/delete-staff/${id}`,
+    .delete(`https://api.goldenbeit.com/dashboard/delete-staff/${id}`,
       {headers: { 'Authorization': `Bearer ${token}` },}
     )
     .then((res) => {
@@ -156,7 +156,7 @@ const StaffTable = () => {
   };
   const handleChangeAccountStatus = (id) => {
     axios
-    .get(`https://golden-gate-three.vercel.app/dashboard/toggle-user-status/${id}`,
+    .get(`https://api.goldenbeit.com/dashboard/toggle-user-status/${id}`,
       {headers: { 'Authorization': `Bearer ${token}` },}
     )
     .then((res) => {
@@ -181,7 +181,7 @@ const StaffTable = () => {
     const selectedOption = options.find(opt=>opt.value === perm_id).label
     console.log(selectedOption,staff_id);
     axios
-    .patch('https://golden-gate-three.vercel.app/dashboard/change-staff-permissions',
+    .patch('https://api.goldenbeit.com/dashboard/change-staff-permissions',
       {
         staff_id,
         perms_list:[selectedOption]

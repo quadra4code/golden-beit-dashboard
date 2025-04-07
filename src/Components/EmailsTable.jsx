@@ -20,7 +20,7 @@ const EmailsTable = () => {
   useEffect(() => {
     setLoading(true);
     axios
-    .post('https://golden-gate-three.vercel.app/dashboard/paginated-contact-us',
+    .post('https://api.goldenbeit.com/dashboard/paginated-contact-us',
       {},
       {
         headers: {
@@ -46,7 +46,7 @@ const EmailsTable = () => {
   }, []);
   const handlePaginate = (pageNumber) => {
     setLoading(true);
-    axios.post('https://golden-gate-three.vercel.app/dashboard/paginated-contact-us',
+    axios.post('https://api.goldenbeit.com/dashboard/paginated-contact-us',
       {
         page_number:pageNumber
       },
@@ -79,7 +79,7 @@ const EmailsTable = () => {
   };
   const handleChangeStatus = (id) => {
     axios
-    .get(`https://golden-gate-three.vercel.app/dashboard/solve-contact-us/${id}`,
+    .get(`https://api.goldenbeit.com/dashboard/solve-contact-us/${id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -106,7 +106,7 @@ const EmailsTable = () => {
   }
   const handleDeleteMsg = (id) => {
     axios
-    .delete(`https://golden-gate-three.vercel.app/dashboard/delete-contact-us/${id}`,
+    .delete(`https://api.goldenbeit.com/dashboard/delete-contact-us/${id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

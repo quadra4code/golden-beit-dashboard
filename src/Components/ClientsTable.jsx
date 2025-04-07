@@ -19,7 +19,7 @@ const ClientsTable = () => {
   useEffect(() => {
     setLoading(true);
     axios
-    .post('https://golden-gate-three.vercel.app/dashboard/paginated-clients',
+    .post('https://api.goldenbeit.com/dashboard/paginated-clients',
       {},
       {
         headers: {
@@ -45,7 +45,7 @@ const ClientsTable = () => {
   }, []);
   const handlePaginate = (pageNumber) => {
     setLoading(true);
-    axios.post('https://golden-gate-three.vercel.app/dashboard/paginated-clients',
+    axios.post('https://api.goldenbeit.com/dashboard/paginated-clients',
       {
         page_number:pageNumber
       },
@@ -104,7 +104,7 @@ const ClientsTable = () => {
   });
   const handleDeleteEmployee = (id) => {
     axios
-    .delete(`https://golden-gate-three.vercel.app/dashboard/delete-staff/${id}`,
+    .delete(`https://api.goldenbeit.com/dashboard/delete-staff/${id}`,
       {headers: { 'Authorization': `Bearer ${token}` },}
     )
     .then((res) => {
@@ -122,7 +122,7 @@ const ClientsTable = () => {
   };
   const handleChangeAccountStatus = (id) => {
     axios
-    .get(`https://golden-gate-three.vercel.app/dashboard/toggle-user-status/${id}`,
+    .get(`https://api.goldenbeit.com/dashboard/toggle-user-status/${id}`,
       {headers: { 'Authorization': `Bearer ${token}` },}
     )
     .then((res) => {

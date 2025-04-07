@@ -16,7 +16,7 @@ const ArticlesTable = () => {
   useEffect(() => {
     setLoading(true);
     axios
-    .get('https://golden-gate-three.vercel.app/dashboard/all-articles',
+    .get('https://api.goldenbeit.com/dashboard/all-articles',
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -53,7 +53,7 @@ const ArticlesTable = () => {
   };
   const handleDeleteArticle = (id) => {
     axios
-    .delete(`https://golden-gate-three.vercel.app/dashboard/delete-article/${id}`,
+    .delete(`https://api.goldenbeit.com/dashboard/delete-article/${id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -74,7 +74,7 @@ const ArticlesTable = () => {
   }
   const handleHideArticle = (id) => {
     axios
-    .patch(`https://golden-gate-three.vercel.app/dashboard/toggle-hidden-article/${id}`,
+    .patch(`https://api.goldenbeit.com/dashboard/toggle-hidden-article/${id}`,
       {},
       {headers: { 'Authorization': `Bearer ${token}` }}
     )

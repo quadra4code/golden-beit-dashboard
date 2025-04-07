@@ -46,7 +46,7 @@ const AppProvider = ({children}) => {
   }
   const handleAddNewEmployee = (first_name, last_name, username, email, role_name) => {
     axios
-    .post('https://golden-gate-three.vercel.app/dashboard/add-staff',
+    .post('https://api.goldenbeit.com/dashboard/add-staff',
       {
         first_name,
         last_name,
@@ -73,7 +73,7 @@ const AppProvider = ({children}) => {
   }
   const createConsult = () => {
     axios
-    .post('https://golden-gate-three.vercel.app/dashboard/create-consult-type',
+    .post('https://api.goldenbeit.com/dashboard/create-consult-type',
       {
         name:consultName,
         brief:consultBrief,
@@ -98,7 +98,7 @@ const AppProvider = ({children}) => {
   const handleEditConsult = () => {
     console.log(consultId,consultBrief,consultName);
     axios
-    .put(`https://golden-gate-three.vercel.app/dashboard/update-consult-type/${consultId}`,
+    .put(`https://api.goldenbeit.com/dashboard/update-consult-type/${consultId}`,
       {
         name: consultName,
         brief: consultBrief
@@ -123,7 +123,7 @@ const AppProvider = ({children}) => {
   }
   const createArticle = (title,body) => {
     axios
-    .post('https://golden-gate-three.vercel.app/dashboard/create-article',
+    .post('https://api.goldenbeit.com/dashboard/create-article',
       {
         title,
         body,
@@ -148,7 +148,7 @@ const AppProvider = ({children}) => {
   const handleEditArticle = () => {
     console.log(ArtId,ArtTitle,ArtBody);
     axios
-    .put(`https://golden-gate-three.vercel.app/dashboard/update-article/${ArtId}`,
+    .put(`https://api.goldenbeit.com/dashboard/update-article/${ArtId}`,
       {
         title: ArtTitle,
         body: ArtBody,
@@ -173,7 +173,7 @@ const AppProvider = ({children}) => {
   }
   const handleAddConsultChildren = () => {
     axios
-    .post('https://golden-gate-three.vercel.app/dashboard/create-consultation',
+    .post('https://api.goldenbeit.com/dashboard/create-consultation',
       {
         title:consultTitle,
         body:consultBody,
@@ -199,7 +199,7 @@ const AppProvider = ({children}) => {
   const handleEditConsultChildren = () => {
     console.log(consultChildId,consultTitle,consultBody);
     axios
-    .put(`https://golden-gate-three.vercel.app/dashboard/update-consultation/${consultChildId}`,
+    .put(`https://api.goldenbeit.com/dashboard/update-consultation/${consultChildId}`,
       {
         title:consultTitle,
         body:consultBody,

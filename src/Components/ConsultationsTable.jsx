@@ -15,7 +15,7 @@ const ConsultationsTable = () => {
   useEffect(() => {
     setLoading(true);
     axios
-    .get('https://golden-gate-three.vercel.app/dashboard/all-consult-types',
+    .get('https://api.goldenbeit.com/dashboard/all-consult-types',
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -52,7 +52,7 @@ const ConsultationsTable = () => {
   };
   const handleDeleteConsults = (id) => {
     axios
-    .delete(`https://golden-gate-three.vercel.app/dashboard/delete-consult-type/${id}`,
+    .delete(`https://api.goldenbeit.com/dashboard/delete-consult-type/${id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -73,7 +73,7 @@ const ConsultationsTable = () => {
   }
   const handleHideConsult = (id) => {
     axios
-    .patch(`https://golden-gate-three.vercel.app/dashboard/toggle-hidden-consult-type/${id}`,
+    .patch(`https://api.goldenbeit.com/dashboard/toggle-hidden-consult-type/${id}`,
       {},
       {headers:{Authorization:`Bearer ${token}`}}
     )
@@ -96,7 +96,7 @@ const ConsultationsTable = () => {
   const handleShowChildren = (id) => {
     setConsultId(id)
     axios
-    .get(`https://golden-gate-three.vercel.app/dashboard/all-consultations/${id}`,
+    .get(`https://api.goldenbeit.com/dashboard/all-consultations/${id}`,
       {headers:{Authorization:`Bearer ${token}`}}
     )
     .then((res)=>{

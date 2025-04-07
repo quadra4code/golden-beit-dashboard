@@ -66,7 +66,7 @@ const ConsultsChildren = () => {
   });
   const handleHideConsult = (id) => {
     axios
-    .patch(`https://golden-gate-three.vercel.app/dashboard/toggle-hidden-consultation/${id}`,
+    .patch(`https://api.goldenbeit.com/dashboard/toggle-hidden-consultation/${id}`,
       {},
       {headers:{Authorization:`Bearer ${token}`}}
     )
@@ -88,7 +88,7 @@ const ConsultsChildren = () => {
   };
   const handleDeleteConsult = (id) => {
     axios
-    .delete(`https://golden-gate-three.vercel.app/dashboard/delete-consultation/${id}`,
+    .delete(`https://api.goldenbeit.com/dashboard/delete-consultation/${id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

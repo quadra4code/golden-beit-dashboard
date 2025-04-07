@@ -14,7 +14,7 @@ export const Statics = () => {
   }
   useEffect(()=>{
     axios
-    .get('https://golden-gate-three.vercel.app/dashboard/main-statistics',
+    .get('https://api.goldenbeit.com/dashboard/main-statistics',
       {headers:{ 'Authorization' : `Bearer ${token}`}}
     )
     .then((res)=>{

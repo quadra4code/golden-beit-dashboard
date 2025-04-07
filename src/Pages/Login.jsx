@@ -15,7 +15,7 @@ export const Login = () => {
       return;
     }
     axios
-    .post('https://golden-gate-three.vercel.app/dashboard/staff-login', {
+    .post('https://api.goldenbeit.com/dashboard/staff-login', {
       username,
       password,
     })
