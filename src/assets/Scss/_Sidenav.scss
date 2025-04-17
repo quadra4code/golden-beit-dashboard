@@ -7,7 +7,7 @@ section.sidenav{
   height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 4rem;
+  gap: 2rem;
   background-color:transparent ;
   padding: 3rem 0;
   ul.ant-menu-root{
@@ -15,7 +15,7 @@ section.sidenav{
     background-color: transparent;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: .5rem;
     svg{
       background-color: transparent;
       border-radius: 12px;
@@ -88,7 +88,7 @@ section.sidenav{
     flex-direction: column;
     align-items: center;
     img{
-      width: 200px;
+      width: 140px;
     }
     span{
       font-size: 14px;

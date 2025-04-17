@@ -8,7 +8,7 @@ section.sidenav {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 4rem;
+  gap: 2rem;
   background-color: transparent;
   padding: 3rem 0;
 }
@@ -17,7 +17,7 @@ section.sidenav ul.ant-menu-root {
   background-color: transparent;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0.5rem;
 }
 section.sidenav ul.ant-menu-root svg {
   background-color: transparent;
@@ -55,7 +55,7 @@ section.sidenav .logo-holder {
   align-items: center;
 }
 section.sidenav .logo-holder img {
-  width: 200px;
+  width: 140px;
 }
 section.sidenav .logo-holder span {
   font-size: 14px;
