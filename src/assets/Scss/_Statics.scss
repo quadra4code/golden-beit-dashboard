@@ -10,24 +10,24 @@
       display: flex;
       align-items: center;
       background: linear-gradient(90deg, #ddd1b8 0%, #958271be 100%);
-      padding: 15px;
+      padding: 8px;
       border-radius: 12px;
       gap: 20px;
-      min-width: 250px;
+      min-width: max-content;
       svg{
-        font-size: 56px;
-        color: var(--primary-color);
+        font-size: 28px;
+        color: #6b5746;
       }
       h1{
         display: flex;
         align-items: center;
-        font-size: 36px;
-        svg{
-          font-size: 25px;
-        }
+        font-size: 28px;
+        color: #522f00;
       }
       span{
-        font-size: 14px;
+        font-size: 15px;
+        font-weight: 700;
+        color: #00000082;
       }
     }
   }

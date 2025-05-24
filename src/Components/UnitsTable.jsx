@@ -8,6 +8,8 @@ import { Button, Dropdown, Space, Select } from 'antd';
 import { BsTrash } from "react-icons/bs";
 import { LuGitPullRequestArrow } from "react-icons/lu";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
+import { FaRegStar } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 import { FaPen } from "react-icons/fa";
 const StaffTable = () => {
   const [paginatedUnits, setPaginatedUnits] = useState();
@@ -107,15 +109,25 @@ const StaffTable = () => {
         icon: <LuGitPullRequestArrow />,
         onClick: () => handleGetUnitReq(id),
       },
-      // {
-      //   label: ' تغيير حالة الوحدة',
-      //   key: '3',
-      //   icon: <FaPen />,
-      //   onClick: () => handleChangeUnitStatus(id),
-      // },
+      {
+        label: paginatedUnits&& paginatedUnits.find((item) => item.id === id).featured
+          ? 'إلغاء تمييز الوحدة'
+          : 'تمييز الوحدة',
+          key: '3',
+        icon: paginatedUnits&& paginatedUnits.find((item) => item.id === id).featured
+          ? <FaStar />
+          : <FaRegStar />,
+        onClick: () => handleFeaturedUnit(id),
+      },
+      {
+        label: ' تغيير حالة الوحدة',
+        key: '4',
+        icon: <FaPen />,
+        onClick: () => handleChangeUnitStatus(id),
+      },
       {
         label: 'حذف الوحدة',
-        key: '3',
+        key: '5',
         icon: <BsTrash />,
         onClick: () => handleDeleteUnit(id),
         danger: true,
@@ -150,6 +162,28 @@ const StaffTable = () => {
       setPaginatedUnits(prevUnit =>
         prevUnit.map(item =>
           item.id === id ? { ...item, hidden: !item.hidden } : item
+        )
+      );
+      openNotificationWithIcon('success',`${res.data.msg}`)
+    })
+    .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
+      console.log(err);
+      openNotificationWithIcon('error',`${err.response.data.msg}`)
+    })
+  };
+  const handleFeaturedUnit = (id) => {
+    axios
+    .get(`https://api.goldenbeit.com/dashboard/toggle-featured-unit/${id}`,
+      {headers: { 'Authorization': `Bearer ${token}` },}
+    )
+    .then((res) => {
+      console.log(res.data);
+      setPaginatedUnits(prevUnit =>
+        prevUnit.map(item =>
+          item.id === id ? { ...item, featured: !item.featured } : item
         )
       );
       openNotificationWithIcon('success',`${res.data.msg}`)
@@ -236,7 +270,10 @@ const StaffTable = () => {
                   {paginatedUnits&& paginatedUnits.length > 0 ? (
                     paginatedUnits.map((item, index) => (
                       <tr key={index}>
-                        <td>{item.id}</td>
+                        <td>
+                          <a target="_blank" href={`https://goldenbeit.com/all-units/${item.id}`} className="order-link">#{item.id}</a>
+                          {/* {item.id} */}
+                        </td>
                         <td>{item.title}</td>
                         <td>{item.over_price_obj.price_value}</td>
                         <td>{item.total_price_obj.price_value}</td>
@@ -306,7 +343,9 @@ const StaffTable = () => {
                   {unitRequests&& unitRequests.length > 0 ? (
                     unitRequests.map((item, index) => (
                       <tr key={index}>
-                        <td>{item.user_id}</td>
+                        <td>
+                          {item.user_id}
+                        </td>
                         <td>{item.first_name} {item.last_name}</td>
                         <td>{item.username}</td>
                         <td>{item.email?item.email:'لا يوجد'}</td>

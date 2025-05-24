@@ -125,7 +125,7 @@ main.home {
   display: flex;
 }
 main.home .content {
-  width: calc(100% - 256px);
+  width: calc(100% - 235px);
   display: flex;
   flex-direction: column;
   padding: 1rem;
@@ -199,6 +199,7 @@ main.table_page .container .table-wrapper table td {
   min-width: -moz-max-content;
   min-width: max-content;
   padding: 12px;
+  white-space: nowrap;
   text-align: center;
   border-bottom: 1px solid #ddd;
   z-index: 1;
@@ -208,6 +209,14 @@ main.table_page .container .table-wrapper table td:last-child {
   position: sticky;
   left: 0;
   background-color: white;
+}
+main.table_page .container .table-wrapper table td .order-link {
+  color: #007bff;
+  font-weight: 500;
+  text-decoration: none;
+}
+main.table_page .container .table-wrapper table td .order-link:hover {
+  text-decoration: underline;
 }
 main.table_page .container .table-wrapper table td .state-span {
   border-radius: 8px;
@@ -265,25 +274,26 @@ main.table_page .container .table-wrapper table tr:hover {
   display: flex;
   align-items: center;
   background: linear-gradient(90deg, #ddd1b8 0%, rgba(149, 130, 113, 0.7450980392) 100%);
-  padding: 15px;
+  padding: 8px;
   border-radius: 12px;
   gap: 20px;
-  min-width: 250px;
+  min-width: -moz-max-content;
+  min-width: max-content;
 }
 .chart .statics-cont .static svg {
-  font-size: 56px;
-  color: var(--primary-color);
+  font-size: 28px;
+  color: #6b5746;
 }
 .chart .statics-cont .static h1 {
   display: flex;
   align-items: center;
-  font-size: 36px;
-}
-.chart .statics-cont .static h1 svg {
-  font-size: 25px;
+  font-size: 28px;
+  color: #522f00;
 }
 .chart .statics-cont .static span {
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.5098039216);
 }
 
 main.popup {

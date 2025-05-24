@@ -114,7 +114,7 @@ const EmailsTable = () => {
       }
     )
     .then((res)=>{
-      paginatedEmails.filter((item) => item.id !== id)
+      setPaginatedEmails(paginatedEmails.filter((item) => item.id !== id))
       openNotificationWithIcon('success',`${res.data.msg}`)
     })
     .catch((err)=>{

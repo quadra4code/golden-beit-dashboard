@@ -31,7 +31,7 @@ const OrdersTable = () => {
     .then((res) => {
       console.log(res.data);
       setPaginatedOrders(res.data.data.all);
-      setUnitStatuses(res.data.data.statuses);
+      setUnitStatuses(res.data.data.request_statuses);
       setPagination(res.data.data.pagination);
       setLoading(false);
     })
@@ -159,10 +159,15 @@ const OrdersTable = () => {
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
   };
-  const handleChangeUnitStatus = (status_id,item_id) => {
+  const handleChangeOrderStatus = (status_id,item_id) => {
     console.log(status_id,item_id);
+    console.log('sddddd');
     axios
-    .get(`https://api.goldenbeit.com/dashboard/update-unit-status/${item_id}/${status_id}`,
+    .patch(`https://api.goldenbeit.com/dashboard/change-request-status`,
+      {
+        request_id: item_id,
+        status_id,
+      },
       {headers: { 'Authorization': `Bearer ${token}` },}
     )
     .then((res) => {
@@ -233,8 +238,11 @@ const OrdersTable = () => {
                             style={{
                               width: 120,
                             }}
-                            onChange={(e)=>handleChangeUnitStatus(e,item.id)}
-                            options={unitStatuses}
+                            onChange={(e)=>handleChangeOrderStatus(e,item.id)}
+                            options={unitStatuses.map(s => ({
+                              label: s.label,
+                              value: s.code
+                            }))}
                           />
                         </td>
                         <td>{item.first_name} {item.last_name}</td>

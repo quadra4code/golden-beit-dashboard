@@ -84,6 +84,7 @@ main.table_page{
         td {
           min-width:max-content;
           padding: 12px;
+          white-space: nowrap;
           text-align: center;
           border-bottom: 1px solid #ddd;
           z-index: 1;
@@ -92,6 +93,14 @@ main.table_page{
             position: sticky;
             left: 0;
             background-color: white;
+          }
+          .order-link {
+            color: #007bff;
+            font-weight: 500;
+            text-decoration: none;
+            &:hover {
+              text-decoration: underline;
+            }
           }
           .state-span{
             border-radius: 8px;
