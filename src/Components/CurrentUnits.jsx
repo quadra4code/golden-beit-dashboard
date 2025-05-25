@@ -92,20 +92,20 @@ const CurrentUnits = () => {
   // const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const menuProps = (id) => ({
     items: [
-      {
-        label: paginatedUnits&& paginatedUnits.find((item) => item.id === id).hidden
-          ? 'إظهار الوحدة'
-          : 'إخفاء الوحدة',
-          key: '1',
-        icon: paginatedUnits&& paginatedUnits.find((item) => item.id === id).hidden
-          ? <FaRegEye />
-          : <FaRegEyeSlash />,
-        // icon: <FaRegEyeSlash />,
-        onClick: () => handleHideUnit(id),
-      },
+      // {
+      //   label: paginatedUnits&& paginatedUnits.find((item) => item.id === id).hidden
+      //     ? 'إظهار الوحدة'
+      //     : 'إخفاء الوحدة',
+      //     key: '1',
+      //   icon: paginatedUnits&& paginatedUnits.find((item) => item.id === id).hidden
+      //     ? <FaRegEye />
+      //     : <FaRegEyeSlash />,
+      //   // icon: <FaRegEyeSlash />,
+      //   onClick: () => handleHideUnit(id),
+      // },
       {
         label: 'طلبات الوحدة',
-        key: '2',
+        key: '1',
         icon: <LuGitPullRequestArrow />,
         onClick: () => handleGetUnitReq(id),
       },
@@ -113,21 +113,21 @@ const CurrentUnits = () => {
         label: paginatedUnits&& paginatedUnits.find((item) => item.id === id).featured
           ? 'إلغاء تمييز الوحدة'
           : 'تمييز الوحدة',
-          key: '3',
+          key: '2',
         icon: paginatedUnits&& paginatedUnits.find((item) => item.id === id).featured
           ? <FaStar />
           : <FaRegStar />,
         onClick: () => handleFeaturedUnit(id),
       },
-      {
-        label: ' تغيير حالة الوحدة',
-        key: '4',
-        icon: <FaPen />,
-        onClick: () => handleChangeUnitStatus(id),
-      },
+      // {
+      //   label: ' تغيير حالة الوحدة',
+      //   key: '4',
+      //   icon: <FaPen />,
+      //   onClick: () => handleChangeUnitStatus(id),
+      // },
       {
         label: 'حذف الوحدة',
-        key: '5',
+        key: '3',
         icon: <BsTrash />,
         onClick: () => handleDeleteUnit(id),
         danger: true,
