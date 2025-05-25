@@ -9,7 +9,7 @@ import { AiOutlinePullRequest } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
 import { GrArticle } from "react-icons/gr";
 import { AiOutlinePartition } from "react-icons/ai";
-
+import { MdOutlineRateReview } from "react-icons/md";
 export const Sidebar = () => {
   const navigate = useNavigate();
   const handleParentApplicationsData = ()=> {
@@ -61,37 +61,66 @@ export const Sidebar = () => {
       ],
     },
     {
-      key: '3',
-      icon: <BsBuildings />,
-      label: 'إدارة  الوحدات',
-      // onClick	:handleContactData
+      key: 'sub2',
+      label: 'إدارة الوحدات ',
+      icon: <BsClipboardData />,
+      children: [
+        {
+          key: '3',
+          label: 'الوحدات الجديدة',
+        },
+        {
+          key: '4',
+          label: 'الوحدات الحالية',
+        },
+        {
+          key: '5',
+          label: 'الوحدات المميزة',
+        },
+        {
+          key: '6',
+          label: 'الوحدات المحذوفة',
+        }
+      ],
     },
+    // {
+    //   key: '3',
+    //   icon: <BsBuildings />,
+    //   label: 'إدارة  الوحدات',
+    //   // onClick	:handleContactData
+    // },
     {
-      key: '4',
+      key: '7',
       icon: <AiOutlinePullRequest />,
       label: 'إدارة الطلبات',
       // onClick	:handleContactData
     },
     {
-      key: '5',
+      key: '8',
       icon: <GrArticle />,
       label: 'إدارة  المقالات',
       // onClick	:handleContactData
     },
     {
-      key: '6',
+      key: '9',
       icon: <AiOutlinePartition />,
       label: 'إدارة  الاستشارات',
       // onClick	:handleContactData
     },
     {
-      key: '7',
+      key: '10',
+      icon: <MdOutlineRateReview />,
+      label: 'إدارة  التقييمات',
+      // onClick	:handleContactData
+    },
+    {
+      key: '11',
       icon: <MailOutlined />,
       label: 'إدارة رسائل التواصل',
       // onClick	:handleContactData
     },
     {
-      key: '8',
+      key: '12',
       icon: <MdLogout />,
       label: 'Log Out',
       // onClick	:handleLogout
@@ -108,7 +137,7 @@ export const Sidebar = () => {
   };
   const onClick = (e) => {
     console.log('click ', e);
-    if(e.key === '8'){
+    if(e.key === '12'){
       handleLogout();
     }
     else if(e.key === '1'){
@@ -118,18 +147,30 @@ export const Sidebar = () => {
       navigate('paginated-clients');
     }
     else if(e.key === '3'){
-      navigate('paginated-units');
+      navigate('paginated-new-units');
     }
     else if(e.key === '4'){
-      navigate('paginated-orders');
+      navigate('paginated-current-units');
     }
     else if(e.key === '5'){
-      navigate('paginated-articles');
+      navigate('paginated-featured-units');
     }
     else if(e.key === '6'){
-      navigate('paginated-consultations');
+      navigate('paginated-deleted-units');
     }
     else if(e.key === '7'){
+      navigate('paginated-orders');
+    }
+    else if(e.key === '8'){
+      navigate('paginated-articles');
+    }
+    else if(e.key === '9'){
+      navigate('paginated-consultations');
+    }
+    else if(e.key === '10'){
+      navigate('paginated-reviews');
+    }
+    else if(e.key === '11'){
       navigate('paginated-emails');
     }
     else{

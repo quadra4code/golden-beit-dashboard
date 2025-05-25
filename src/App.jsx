@@ -10,15 +10,25 @@ import ArticlesTable from './Components/ArticlesTable';
 import OrdersTable from './Components/OrdersTable';
 import ConsultationsTable from './Components/ConsultationsTable';
 import ProtectedRoute from './Components/ProtectedRoute';
+import NewUnits from './Components/NewUnits';
+import CurrentUnits from './Components/CurrentUnits';
+import DeletedUnits from './Components/DeletedUnits';
+import ReviewsTable from './Components/ReviewsTable';
+import FeaturedUnits from './Components/FeaturedUnits';
 const App = () => {
   return (
     <Router>
       <Routes>
         <Route path='/' element={<ProtectedRoute><Home/></ProtectedRoute>}>
           <Route path="paginated-staff" element={<StaffTable />} />
-          <Route path="paginated-units" element={<UnitsTable />} />
+          {/* <Route path="paginated-units" element={<UnitsTable />} /> */}
+          <Route path="paginated-new-units" element={<NewUnits />} />
+          <Route path="paginated-current-units" element={<CurrentUnits />} />
+          <Route path="paginated-featured-units" element={<FeaturedUnits />} />
+          <Route path="paginated-deleted-units" element={<DeletedUnits />} />
           <Route path="paginated-articles" element={<ArticlesTable />} />
           <Route path="paginated-consultations" element={<ConsultationsTable />} />
+          <Route path="paginated-reviews" element={<ReviewsTable />} />
           <Route path="paginated-orders" element={<OrdersTable />} />
           <Route path="paginated-clients" element={<ClientsTable />} />
           <Route path="paginated-emails" element={<EmailsTable />} />
