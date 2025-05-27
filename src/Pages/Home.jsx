@@ -5,12 +5,14 @@ import Table from '../Components/StaffTable'
 import { Statics } from '../Components/Statics'
 import { Outlet } from 'react-router-dom'
 import Popup from '../Components/Popup'
+import ConfirmPopup from '../Components/ConfirmPopup'
 
 const Home = () => {
   const {contextHolder} = useContext(AppContext)
   return (
     <main className='home'>
       <Popup/>
+      <ConfirmPopup/>
       {contextHolder}
       <Sidebar/>
       <section className='content'>

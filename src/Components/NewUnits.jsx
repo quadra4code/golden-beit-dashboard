@@ -22,7 +22,7 @@ const NewUnits = () => {
   const [unitStatuses, setUnitStatuses] = useState();
   const [unitRequests, setUnitRequests] = useState();
   const itemsPerPage = 20;
-  const {handleUnAuth, token, openNotificationWithIcon,} = useContext(AppContext);
+  const {handleUnAuth, token, openNotificationWithIcon,setModalType, setIsModalOpen, setEleId} = useContext(AppContext);
   useEffect(() => {
     setLoading(true);
     axios
@@ -229,25 +229,9 @@ const NewUnits = () => {
     })
   }
   const handleDisApproveUnit = (id) => {
-    axios
-    .patch(`https://api.goldenbeit.com/dashboard/disapprove-unit`,
-      {
-        unit_id: id
-      },
-      {headers: { 'Authorization': `Bearer ${token}` },}
-    )
-    .then((res) => {
-      console.log(res.data);
-      setPaginatedUnits(paginatedUnits.filter((item) => item.id !== id))
-      openNotificationWithIcon('success',`${res.data.msg}`)
-    })
-    .catch((err) => {
-      if(err.status===401){
-        handleUnAuth()
-      }
-      console.log(err);
-      openNotificationWithIcon('error',`${err.response.data.msg}`)
-    })
+    setModalType('units');
+    setIsModalOpen(true);
+    setEleId(id);
   }
   const handleGetUnitReq = (id) => {
     axios

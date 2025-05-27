@@ -8,7 +8,6 @@ import { Button, Dropdown, Space, Select } from 'antd';
 import { BsTrash } from "react-icons/bs";
 import { LuGitPullRequestArrow } from "react-icons/lu";
 const OrdersTable = () => {
-  const [paginatedOrders, setPaginatedOrders] = useState();
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState();
   const [pagination, setPagination] = useState();
@@ -16,34 +15,51 @@ const OrdersTable = () => {
   const [unitStatuses, setUnitStatuses] = useState();
   const [unitRequests, setUnitRequests] = useState();
   const itemsPerPage = 20;
-  const {handleUnAuth, token, openNotificationWithIcon,} = useContext(AppContext);
+  // Get all modal/order state from context
+  const {
+    setIsModalOpen,
+    refuseMsg,
+    handleUnAuth,
+    setModalType,
+    token,
+    openNotificationWithIcon,
+    selectedStatuses,
+    setSelectedStatuses,
+    pendingStatusChange,
+    setPendingStatusChange,
+    paginatedOrders,
+    setPaginatedOrders,
+    updateOrderStatus,
+    handleModalOk,
+    handleModalCancel
+  } = useContext(AppContext);
   useEffect(() => {
     setLoading(true);
     axios
-    .post('https://api.goldenbeit.com/dashboard/paginated-requests',
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      .post('https://api.goldenbeit.com/dashboard/paginated-requests',
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
         }
-      }
-    )
-    .then((res) => {
-      console.log(res.data);
-      setPaginatedOrders(res.data.data.all);
-      setUnitStatuses(res.data.data.request_statuses);
-      setPagination(res.data.data.pagination);
-      setLoading(false);
-    })
-    .catch((err) => {
-      if(err.status===401){
-        handleUnAuth()
-      }
-      console.log(err);
-    })
-    .finally(() => {
-      setLoading(false);
-    });
+      )
+      .then((res) => {
+        console.log(res.data);
+        setPaginatedOrders(res.data.data.all);
+        setUnitStatuses(res.data.data.request_statuses);
+        setPagination(res.data.data.pagination);
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (err.status === 401) {
+          handleUnAuth();
+        }
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
   const handlePaginate = (pageNumber) => {
     setLoading(true);
@@ -88,14 +104,8 @@ const OrdersTable = () => {
   const menuProps = (id) => ({
     items: [
       {
-        label: 'تغيير حالة الطلب',
+        label: 'حذف الطلب',
         key: '1',
-        icon: <LuGitPullRequestArrow />,
-        onClick: () => handleGetUnitReq(id),
-      },
-      {
-        label: 'رفض الطلب',
-        key: '2',
         icon: <BsTrash />,
         onClick: () => handleDeleteUnit(id),
         danger: true,
@@ -104,7 +114,7 @@ const OrdersTable = () => {
   });
   const handleDeleteUnit = (id) => {
     axios
-    .delete(`https://api.goldenbeit.com/core/delete-unit/${id}`,
+    .delete(`https://api.goldenbeit.com/core/cancel-request/${id}`,
       {headers: { 'Authorization': `Bearer ${token}` },}
     )
     .then((res) => {
@@ -159,34 +169,38 @@ const OrdersTable = () => {
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
   };
-  const handleChangeOrderStatus = (status_id,item_id) => {
-    console.log(status_id,item_id);
-    console.log('sddddd');
-    axios
-    .patch(`https://api.goldenbeit.com/dashboard/change-request-status`,
-      {
-        request_id: item_id,
-        status_id,
-      },
-      {headers: { 'Authorization': `Bearer ${token}` },}
-    )
-    .then((res) => {
-      console.log(res.data);
-      setPaginatedOrders(prevUnit =>
-        prevUnit.map(item =>
-          item.id === item_id ? { ...item, status_obj: res.data } : item
-        )
-      );
-      openNotificationWithIcon('success',`${res.data.msg}`)
-    })
-    .catch((err) => {
-      if(err.status===401){
-        handleUnAuth()
-      }
-      console.log(err);
-      openNotificationWithIcon('error',`${err.response.data.msg}`)
-    });
+  const handleChangeOrderStatus = (status_id, item_id) => {
+    if (status_id == 2) {
+      setModalType('orders');
+      setPendingStatusChange({ orderId: item_id, statusId: status_id });
+      setIsModalOpen(true);
+      // Don't update status yet
+      return;
+    }
+    // Update status immediately
+    updateOrderStatus(status_id, item_id);
   };
+  // const updateOrderStatus = (status_id, item_id) => {
+  //   axios.patch('https://api.goldenbeit.com/dashboard/change-request-status', {
+  //     request_id: item_id,
+  //     status_id,
+  //     status_msg: refuseMsg
+  //   }, { headers: { 'Authorization': `Bearer ${token}` } })
+  //     .then((res) => {
+  //       setPaginatedOrders(prevUnit =>
+  //         prevUnit.map(item =>
+  //           item.id === item_id ? { ...item, status_obj: res.data } : item
+  //         )
+  //       );
+  //       setSelectedStatuses(prev => ({ ...prev, [item_id]: status_id }));
+  //       openNotificationWithIcon('success', `${res.data.msg}`);
+  //     })
+  //     .catch((err) => {
+  //       if (err.status === 401) handleUnAuth();
+  //       openNotificationWithIcon('error', `${err.response.data.msg}`);
+  //     });
+  // };
+  // handleModalOk and handleModalCancel are now provided by context
   return (
     <>
       {loading ? (
@@ -212,6 +226,7 @@ const OrdersTable = () => {
                     <th>إجمالى السعر</th>
                     <th>تاريخ الطلب</th>
                     <th>حالة الطلب</th>
+                    <th> سبب الرفض</th>
                     <th>الاسم</th>
                     {/* <th>اسم المستخدم</th>
                     <th>البريد الالكتروني</th>
@@ -234,17 +249,16 @@ const OrdersTable = () => {
                         {/* <td>{item.status_obj.name}</td> */}
                         <td>
                           <Select
-                            defaultValue={item.status_obj.name}
-                            style={{
-                              width: 120,
-                            }}
-                            onChange={(e)=>handleChangeOrderStatus(e,item.id)}
+                            value={selectedStatuses[item.id] ?? item.status_obj.code}
+                            style={{ width: 120 }}
+                            onChange={(e) => handleChangeOrderStatus(e, item.id)}
                             options={unitStatuses.map(s => ({
                               label: s.label,
                               value: s.code
                             }))}
                           />
                         </td>
+                        <td>{item.status_msg || '---'} </td>
                         <td>{item.first_name} {item.last_name}</td>
                         {/* <td>{item.username}</td>
                         <td>{item.email?item.email:'لا يوجد'}</td> */}
@@ -252,7 +266,7 @@ const OrdersTable = () => {
                         <td>{item.phone_numbers_list.length>0?
                           item.phone_numbers_list.map((phone)=>
                           <><span key={phone.phone_number_id}>
-                              {phone.phone_number} {phone.phone_number_confirmed?'موثق':'غير موثق'}
+                              {phone.phone_number} / {phone.phone_number_confirmed?'موثق':'غير موثق'}
                             </span> <br/>
                           </>):'لا يوجد'}
                         </td>

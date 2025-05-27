@@ -252,15 +252,17 @@ const CurrentUnits = () => {
                   <tr>
                     <th>المسلسل</th>
                     <th>عنوان الوحدة</th>
-                    <th>الاوفر</th>
-                    <th>الاجمالى</th>
-                    <th>اخر تحديث</th>
-                    <th>عدد الطلبات</th>
+                    {/* <th>الاجمالى</th> */}
                     <th>النوع</th>
+                    <th>المشروع</th>
+                    <th>المدينة</th>
+                    <th>الاوفر</th>
                     <th>رقم الوحدة</th>
                     <th>رقم العمارة</th>
+                    <th>عدد الطلبات</th>
                     <th>حالة الوحدة</th>
-                    <th>الظهور</th>
+                    <th>اخر تحديث</th>
+                    {/* <th>الظهور</th> */}
                     <th>خيارات</th>
                   </tr>
                 </thead>
@@ -273,13 +275,14 @@ const CurrentUnits = () => {
                           {/* {item.id} */}
                         </td>
                         <td>{item.title}</td>
-                        <td>{item.over_price_obj.price_value}</td>
-                        <td>{item.total_price_obj.price_value}</td>
-                        <td>{item.created_at}</td>
-                        <td>{item.requests_count}</td>
+                        {/* <td>{item.total_price_obj.price_value}</td> */}
                         <td>{item.unit_type}</td>
+                        <td>{item.project}</td>
+                        <td>{item.city}</td>
+                        <td>{item.over_price_obj.price_value}</td>
                         <td>{item.unit_number}</td>
-                        <td>{item.building_number}</td>
+                        <td>{item.building_number ? item.building_number : "----"}</td>
+                        <td>{item.requests_count}</td>
                         <td>
                           <Select
                             defaultValue={item.status_obj.name}
@@ -290,7 +293,8 @@ const CurrentUnits = () => {
                             options={unitStatuses}
                           />
                         </td>
-                        <td>{item.hidden? 'مخفي': 'ظاهر'}</td>
+                        <td>{item.updated_at}</td>
+                        {/* <td>{item.hidden? 'مخفي': 'ظاهر'}</td> */}
                         <td>
                           <Dropdown menu={menuProps(item.id)}>
                             <Button>

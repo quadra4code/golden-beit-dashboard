@@ -26,8 +26,15 @@ const AppProvider = ({children}) => {
   const [ArtBody, setArtBody] = useState(null);
   const [ArtId, setArtId] = useState(null);
   const [paginatedArticles, setPaginatedArticles] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [roles, setRoles] = useState();
+  const [eleId, setEleId] = useState();
+  const [refuseMsg,setRefuseMsg] = useState(null);
+  const [modalType,setModalType] = useState();
   const [isChangePass, setIsChangePass] = useState(false);
+  const [pendingStatusChange, setPendingStatusChange] = useState(null);
+  const [selectedStatuses, setSelectedStatuses] = useState({});
+  const [paginatedOrders, setPaginatedOrders] = useState([]);
   const token = localStorage.getItem('golden-beit-dashboard-token');
   const openNotificationWithIcon = (type, message, description) => {
     api[type]({
@@ -223,8 +230,96 @@ const AppProvider = ({children}) => {
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     });
   }
+  const onTextAreaChange = (e) => {
+    const { value } = e.target;
+    console.log(value);
+    setRefuseMsg(value);
+  }
+    const handleShowModal = (id,ModalType) => {
+    setModalType(ModalType);
+    setEleId(id);
+    console.log(id);
+    setIsModalOpen(true)
+  };
+  const updateOrderStatus = (status_id, item_id) => {
+    axios.patch('https://api.goldenbeit.com/dashboard/change-request-status', {
+      request_id: item_id,
+      status_id,
+      status_msg: refuseMsg
+    }, { headers: { 'Authorization': `Bearer ${token}` } })
+      .then((res) => {
+        console.log(res.data);
+        
+        setPaginatedOrders(prevUnit =>
+          prevUnit.map(item =>
+            item.id === item_id ? { ...item, status_obj: res.data } : item
+          )
+        );
+        setSelectedStatuses(prev => ({ ...prev, [item_id]: status_id }));
+        openNotificationWithIcon('success', `${res.data.msg}`);
+      })
+      .catch((err) => {
+        console.log(err);
+        
+        if (err.status === 401) handleUnAuth();
+        openNotificationWithIcon('error', `${err.response.data.msg}`);
+      });
+  };
+  const handleDisApproveUnit = () => {
+    axios
+    .patch(`https://api.goldenbeit.com/dashboard/disapprove-unit`,
+      {
+        unit_id: eleId,
+        msg: refuseMsg
+      },
+      {headers: { 'Authorization': `Bearer ${token}` },}
+    )
+    .then((res) => {
+      console.log(res.data);
+      setPaginatedUnits(paginatedUnits.filter((item) => item.id !== id))
+      openNotificationWithIcon('success',`${res.data.msg}`)
+    })
+    .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
+      console.log(err);
+      openNotificationWithIcon('error',`${err.response.data?.msg}`)
+    })
+  }
+  const handleModalOk = () => {
+    if (!refuseMsg) {
+      openNotificationWithIcon('error', 'الرجاء كتابة سبب الرفض');
+      return;
+    }
+    if(modalType === 'units'){
+      handleDisApproveUnit();
+      setIsModalOpen(false);
+      setRefuseMsg(null);
+    }
+    else if(modalType === 'orders') {
+      if (pendingStatusChange) {
+        updateOrderStatus(pendingStatusChange.statusId, pendingStatusChange.orderId);
+        setPendingStatusChange(null);
+        setIsModalOpen(false);
+        setRefuseMsg(null);
+      }
+    }
+  };
+  const handleModalCancel = () => {
+    if (pendingStatusChange) {
+      setSelectedStatuses(prev => ({
+        ...prev,
+        [pendingStatusChange.orderId]: paginatedOrders.find(o => o.id === pendingStatusChange.orderId).status_obj.code
+      }));
+      setPendingStatusChange(null);
+      setIsModalOpen(false);
+      setRefuseMsg(null);
+    }
+  };
+  console.log(eleId);
   return (
-    <AppContext.Provider value={{isChangePass, setIsChangePass,
+    <AppContext.Provider value={{isChangePass, setIsChangePass,handleShowModal,
       handleEditArticle,consultTitle,setConsultTitle,consultBody,setConsultBody,
       isAddNewEmployee, setIsAddNewEmployee, isOpenPopup, setIsOpenPopup,
       consultName,setConsultName,isEditConsultChildren, setIsEditConsultChildren,
@@ -232,12 +327,21 @@ const AppProvider = ({children}) => {
       handleUnAuth,openNotificationWithIcon,contextHolder,token,isEditArticle,
       consultId, setConsultId,handleAddConsultChildren,handleEditConsultChildren,
       roles,setRoles,handleAddNewEmployee,paginatedStaff, setPaginatedStaff,
-      setIsEditArticle,isAddArticle, setIsAddArticle,createArticle,
-      paginatedArticles,setPaginatedArticles,handleEditConsult,
+      setIsEditArticle,isAddArticle, setIsAddArticle,createArticle,setEleId,
+      paginatedArticles,setPaginatedArticles,handleEditConsult,setRefuseMsg,refuseMsg,
       articleId, setArticleId, ArtTitle, setArtTitle,ArtBody, setArtBody,
       ArtId,setArtId,isEditConsult, setIsEditConsult,consultChildId, setConsultChildId,
-      paginatedConsults, setPaginatedConsults,isConsult, setIsConsult,
-      createConsult,consultBrief,setConsultBrief
+      paginatedConsults, setPaginatedConsults,isConsult, setIsConsult,onTextAreaChange,
+      createConsult,consultBrief,setConsultBrief, isModalOpen, setIsModalOpen,modalType,setModalType,
+        handleModalOk,
+        handleModalCancel,
+        pendingStatusChange,
+        setPendingStatusChange,
+        selectedStatuses,
+        setSelectedStatuses,
+        paginatedOrders,
+        setPaginatedOrders,
+        updateOrderStatus,
       }}>
       {children}
     </AppContext.Provider>

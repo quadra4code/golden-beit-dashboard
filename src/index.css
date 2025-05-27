@@ -190,6 +190,7 @@ main.table_page .container .table-wrapper table th {
   color: white;
   padding: 10px;
   z-index: 3;
+  white-space: nowrap;
 }
 main.table_page .container .table-wrapper table th:last-child {
   position: sticky;
@@ -412,6 +413,18 @@ main.popup .popup_inner .wrapper span {
   main.popup .popup_inner .wrapper span {
     font-size: 12px;
   }
+}
+
+.ant-modal-body textarea {
+  width: 100%;
+  height: 100%;
+  resize: none;
+  outline: none;
+  padding: 0.5rem;
+  font-size: 1rem;
+  outline: none;
+  border: 1px solid #ddd;
+  border-radius: 6px;
 }
 
 * {

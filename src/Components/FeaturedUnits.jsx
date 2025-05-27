@@ -154,7 +154,7 @@ const FeaturedUnits = () => {
                         <td>{item.over_price_obj.price_value}</td>
                         <td>{item.total_price_obj.price_value}</td>
                         <td>{item.requests_count}</td>
-                        <td>{item.created_at}</td>
+                        <td>{item.updated_at}</td>
                         {/* <td>
                           <Select
                             defaultValue={item.status_obj.name}

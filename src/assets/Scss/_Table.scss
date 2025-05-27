@@ -76,6 +76,7 @@ main.table_page{
           padding: 10px;
           // min-width:140px;
           z-index: 3;
+          white-space: nowrap;
           &:last-child{
             position: sticky;
             left: 0;
