@@ -60,6 +60,12 @@ main.table_page{
         font-size: 16px;
         outline-color: var(--primary-color);
       }
+      .ant-select{
+        height: 100%;
+        .ant-select-selector{
+          padding: 6px 11px !important;
+        }
+      }
     }
     .table-wrapper{
       overflow-x: auto;

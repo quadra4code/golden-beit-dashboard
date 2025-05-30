@@ -13,6 +13,7 @@ const OrdersTable = () => {
   const [pagination, setPagination] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [unitStatuses, setUnitStatuses] = useState();
+  const [statusFilter, setStatusFilter] = useState();
   const [unitRequests, setUnitRequests] = useState();
   const itemsPerPage = 20;
   // Get all modal/order state from context
@@ -61,11 +62,44 @@ const OrdersTable = () => {
         setLoading(false);
       });
   }, []);
+  const handleFilterBy = (e) => {
+    console.log(e);
+    setStatusFilter(e);
+    setPaginatedOrders([]);
+    setLoading(true);
+    axios
+    .post('https://api.goldenbeit.com/dashboard/paginated-requests',
+      {
+        status_id: e,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
+    ).then((res) => {
+      console.log(res.data);
+      setPaginatedOrders(res.data.data.all);
+      setUnitStatuses(res.data.data.request_statuses);
+      setPagination(res.data.data.pagination);
+      setLoading(false);
+    })
+    .catch((err) => { 
+      if(err.status===401){
+        handleUnAuth()
+      }
+      console.log(err);
+    })
+    .finally(() => {  
+      setLoading(false);
+    });
+  }
   const handlePaginate = (pageNumber) => {
     setLoading(true);
     axios.post('https://api.goldenbeit.com/dashboard/paginated-units',
       {
-        page_number:pageNumber
+        page_number:pageNumber,
+        status_id: statusFilter,
       },
       {
         headers: {
@@ -215,6 +249,25 @@ const OrdersTable = () => {
                 onChange={handleSearch}
                 placeholder="ابحث  ..."
               />
+              {/* <Select
+                defaultValue="الكل"
+                style={{
+                  width: 120,
+                }}
+                onChange={(e)=>handleFilterBy(e)}
+                options={unitStatuses}
+              /> */}
+              <Select
+                defaultValue='الكل'
+                onChange={(e)=>handleFilterBy(e)}
+                style={{
+                  width: 120,
+                }}
+                options={unitStatuses&& unitStatuses.map(s => ({
+                  label: s.label,
+                  value: s.code
+                }))}
+              />
             </div>
             <div className="table-wrapper">
               <table>
@@ -223,7 +276,7 @@ const OrdersTable = () => {
                     <th>المسلسل</th>
                     <th>عنوان الوحدة</th>
                     <th>سعر الاوفر</th>
-                    <th>إجمالى السعر</th>
+                    {/* <th>إجمالى السعر</th> */}
                     <th>تاريخ الطلب</th>
                     <th>حالة الطلب</th>
                     <th> سبب الرفض</th>
@@ -232,7 +285,7 @@ const OrdersTable = () => {
                     <th>البريد الالكتروني</th>
                     <th>توثيق البريد الالكتروني</th>
                     <th>حالة الحساب</th> */}
-                    <th>اخر دخول</th>
+                    {/* <th>اخر دخول</th> */}
                     <th>أرقام الهاتف</th>
                     <th>خيارات</th>
                   </tr>
@@ -243,8 +296,8 @@ const OrdersTable = () => {
                       <tr key={index}>
                         <td>{item.id}</td>
                         <td>{item.title}</td>
-                        <td>{item.over_price_obj.currency} {item.over_price_obj.price_value}</td>
-                        <td>{item.total_price_obj.currency} {item.total_price_obj.price_value}</td>
+                        <td>{item.over_price_obj.price_value} {item.over_price_obj.currency} </td>
+                        {/* <td>{item.total_price_obj.currency} {item.total_price_obj.price_value}</td> */}
                         <td>{item.created_at}</td>
                         {/* <td>{item.status_obj.name}</td> */}
                         <td>
@@ -262,11 +315,11 @@ const OrdersTable = () => {
                         <td>{item.first_name} {item.last_name}</td>
                         {/* <td>{item.username}</td>
                         <td>{item.email?item.email:'لا يوجد'}</td> */}
-                        <td>{item.last_login?item.last_login:'لا يوجد'}</td>
+                        {/* <td>{item.last_login?item.last_login:'لا يوجد'}</td> */}
                         <td>{item.phone_numbers_list.length>0?
                           item.phone_numbers_list.map((phone)=>
                           <><span key={phone.phone_number_id}>
-                              {phone.phone_number} / {phone.phone_number_confirmed?'موثق':'غير موثق'}
+                              {phone.phone_number}
                             </span> <br/>
                           </>):'لا يوجد'}
                         </td>

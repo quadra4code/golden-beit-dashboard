@@ -18,6 +18,7 @@ const CurrentUnits = () => {
   const [pagination, setPagination] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [unitStatuses, setUnitStatuses] = useState();
+  const [statusFilter, setStatusFilter] = useState();
   const [unitRequests, setUnitRequests] = useState();
   const itemsPerPage = 20;
   const {handleUnAuth, token, openNotificationWithIcon,} = useContext(AppContext);
@@ -49,12 +50,45 @@ const CurrentUnits = () => {
       setLoading(false);
     });
   }, []);
+  const handleFilterBy = (e) => {
+    console.log(e);
+    setStatusFilter(e);
+    setPaginatedUnits([]);
+    setLoading(true);
+    axios
+    .post('https://api.goldenbeit.com/dashboard/paginated-units',
+      {
+        status_id: e,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
+    ).then((res) => {
+      console.log(res.data);
+      setPaginatedUnits(res.data.data.all);
+      setUnitStatuses(res.data.data.statuses);
+      setPagination(res.data.data.pagination);
+      setLoading(false);
+    })
+    .catch((err) => { 
+      if(err.status===401){
+        handleUnAuth()
+      }
+      console.log(err);
+    })
+    .finally(() => {  
+      setLoading(false);
+    });
+  }
   console.log(unitStatuses);
   const handlePaginate = (pageNumber) => {
     setLoading(true);
     axios.post('https://api.goldenbeit.com/dashboard/paginated-units',
       {
-        page_number:pageNumber
+        page_number:pageNumber,
+        status_id: statusFilter
       },
       {
         headers: {
@@ -244,6 +278,14 @@ const CurrentUnits = () => {
                 value={searchTerm}
                 onChange={handleSearch}
                 placeholder="ابحث باسمك ..."
+              />
+              <Select
+                defaultValue="الكل"
+                style={{
+                  width: 120,
+                }}
+                onChange={(e)=>handleFilterBy(e)}
+                options={unitStatuses}
               />
             </div>
             <div className="table-wrapper">
