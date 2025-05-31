@@ -15,7 +15,7 @@ const StaffTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [options, setOptions] = useState();
   const itemsPerPage = 20;
-  const {handleUnAuth,  paginatedStaff, setPaginatedStaff, token, setIsAddNewEmployee, setIsOpenPopup, setRoles, roles,openNotificationWithIcon} = useContext(AppContext);
+  const { handleUnAuth,  paginatedStaff, setPaginatedStaff, token, setIsAddNewEmployee, setIsOpenPopup, setRoles, roles,openNotificationWithIcon} = useContext(AppContext);
   useEffect(() => {
     setLoading(true);
     axios
@@ -56,6 +56,7 @@ const StaffTable = () => {
         label: item.name,
       }));
       setOptions(formattedOptions);
+      setRoles(formattedOptions);
     })
     .catch((err) => {
       if(err.status===401){

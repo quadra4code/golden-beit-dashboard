@@ -1,6 +1,7 @@
 import React,{useState, useContext} from 'react';
 import { AppContext } from '../Context/AppContext';
 import axios from 'axios';
+import { Select } from 'antd';
 const Popup = () => {
   const [oldPass, setOldPass] = useState('');
   const [newPass, setNewPass] = useState('');
@@ -50,17 +51,26 @@ const Popup = () => {
     return (
     <main className={`popup ${isOpenPopup ? 'active' : ''}`}>
       <div className='popup_inner'>
-        <form className='change-pass' onSubmit={handleChangePassReq}>
+        <form className='change-pass' >
           <input type='text' required onChange={(e)=>setFirst_name(e.target.value)} placeholder='الأسم الأول'/>
           <input type='text' onChange={(e)=>setLast_name(e.target.value)} placeholder='الأسم الأخير'/>
           <input type='text'required onChange={(e)=>setUsername(e.target.value)} placeholder='رقم الهاتف'/>
           <input type='email' onChange={(e)=>setEmail(e.target.value)} placeholder='البريد الإلكتروني'/>
-          <select name="role_name" id="" onChange={(e)=>setRole_name(e.target.value)}>
+          <Select
+            defaultValue="الصلاحية"
+            style={{
+              width: '100%',
+            }}
+            labelInValue
+            onChange={(e)=>setRole_name(e.label)}
+            options={roles}
+          />
+          {/* <select name="role_name" id="" onChange={(e)=>setRole_name(e.target.value)}>
             <option hidden disabled selected>الصلاحية</option>
             {roles && roles.map((role)=>(
               <option value={role.name}>{role.name}</option>
             ))}
-          </select>
+          </select> */}
         </form>
         <div className="btns">
           <button onClick={()=>handleAddNewEmployee(first_name,last_name,username,email,role_name)} className='rate-btn'>إضافة موظف</button>
@@ -74,7 +84,7 @@ const Popup = () => {
     return (
     <main className={`popup ${isOpenPopup ? 'active' : ''}`}>
       <div className='popup_inner'>
-        <form className='change-pass' onSubmit={handleChangePassReq}>
+        <form className='change-pass' >
           <input value={ArtTitle} type='text' required onChange={(e)=>setArtTitle(e.target.value)} placeholder='عنوان المقالة'/>
           <textarea value={ArtBody}  rows='8' onChange={(e)=>setArtBody(e.target.value)} placeholder='نص المقالة'/>
         </form>
@@ -90,7 +100,7 @@ const Popup = () => {
     return (
     <main className={`popup ${isOpenPopup ? 'active' : ''}`}>
       <div className='popup_inner'>
-        <form className='change-pass' onSubmit={handleChangePassReq}>
+        <form className='change-pass' >
           <input value={ArtTitle} type='text' required onChange={(e)=>setArtTitle(e.target.value)} placeholder='عنوان المقالة'/>
           <textarea value={ArtBody}  rows='8' onChange={(e)=>setArtBody(e.target.value)} placeholder='نص المقالة'/>
         </form>
@@ -106,7 +116,7 @@ const Popup = () => {
     return (
     <main className={`popup ${isOpenPopup ? 'active' : ''}`}>
       <div className='popup_inner'>
-        <form className='change-pass' onSubmit={handleChangePassReq}>
+        <form className='change-pass' >
           <input value={consultTitle} type='text' required onChange={(e)=>setConsultTitle(e.target.value)} placeholder='عنوان الاستشارة'/>
           <textarea value={consultBody}  rows='8' onChange={(e)=>setConsultBody(e.target.value)} placeholder='نص الاستشارة'/>
         </form>
@@ -123,7 +133,7 @@ const Popup = () => {
     return (
     <main className={`popup ${isOpenPopup ? 'active' : ''}`}>
       <div className='popup_inner'>
-        <form className='change-pass' onSubmit={handleChangePassReq}>
+        <form className='change-pass' >
           <input value={consultName} type='text' required onChange={(e)=>setConsultName(e.target.value)} placeholder='نوع الاستشارة'/>
           <input value={consultBrief} type='text' required onChange={(e)=>setConsultBrief(e.target.value)} placeholder='بريف الاستشارة'/>
         </form>

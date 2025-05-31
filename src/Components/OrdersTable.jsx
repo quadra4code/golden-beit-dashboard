@@ -13,6 +13,7 @@ const OrdersTable = () => {
   const [pagination, setPagination] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [unitStatuses, setUnitStatuses] = useState();
+  const [salesStaff, setSalesStaff] = useState();
   const [statusFilter, setStatusFilter] = useState();
   const [unitRequests, setUnitRequests] = useState();
   const itemsPerPage = 20;
@@ -49,6 +50,7 @@ const OrdersTable = () => {
         console.log(res.data);
         setPaginatedOrders(res.data.data.all);
         setUnitStatuses(res.data.data.request_statuses);
+        setSalesStaff(res.data.data.sales_staff);
         setPagination(res.data.data.pagination);
         setLoading(false);
       })
@@ -203,6 +205,29 @@ const OrdersTable = () => {
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
   };
+  const handleChangeSalesStaff = (sales_id, order_id) => {
+    axios
+    .post('https://api.goldenbeit.com/dashboard/assign-sales-request', 
+      {
+        sales_id: sales_id,
+        request_id: order_id,
+      }, 
+      { headers: { 'Authorization': `Bearer ${token}` } })
+    .then((res) => {
+      console.log(res.data);
+      setPaginatedOrders(prevUnit =>
+        prevUnit.map(item =>
+          item.id === order_id ? { ...item, sales_obj: res.data } : item
+        )
+      );
+      openNotificationWithIcon('success', `${res.data.msg}`);
+    })
+    .catch((err) => {
+      console.log(err);
+      if (err.status === 401) handleUnAuth();
+      openNotificationWithIcon('error', `${err.response.data.msg}`);
+    });
+  };
   const handleChangeOrderStatus = (status_id, item_id) => {
     if (status_id == 2) {
       setModalType('orders');
@@ -280,6 +305,7 @@ const OrdersTable = () => {
                     <th>تاريخ الطلب</th>
                     <th>حالة الطلب</th>
                     <th> سبب الرفض</th>
+                    <th>مسؤل المبيعات</th>
                     <th>الاسم</th>
                     {/* <th>اسم المستخدم</th>
                     <th>البريد الالكتروني</th>
@@ -305,13 +331,24 @@ const OrdersTable = () => {
                             value={selectedStatuses[item.id] ?? item.status_obj.code}
                             style={{ width: 120 }}
                             onChange={(e) => handleChangeOrderStatus(e, item.id)}
-                            options={unitStatuses.map(s => ({
+                            options={unitStatuses&& unitStatuses.map(s => ({
                               label: s.label,
                               value: s.code
                             }))}
                           />
                         </td>
                         <td>{item.status_msg || '---'} </td>
+                        <td>
+                          <Select
+                            defaultValue={item.sales_obj?.name ||  'غير محدد'}
+                            style={{ width: 120 }}
+                            onChange={(e) => handleChangeSalesStaff(e, item.id)}
+                            options={salesStaff&& salesStaff.map(s => ({
+                              label: s.first_name + ' ' + s.last_name,
+                              value: s.id
+                            }))}
+                          />
+                        </td>
                         <td>{item.first_name} {item.last_name}</td>
                         {/* <td>{item.username}</td>
                         <td>{item.email?item.email:'لا يوجد'}</td> */}
