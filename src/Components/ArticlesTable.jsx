@@ -10,6 +10,11 @@ import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
 import { FaPen } from "react-icons/fa";
 
 const ArticlesTable = () => {
+  const staffRoles = localStorage.getItem('staffRoles');
+  if (staffRoles && staffRoles.includes('Sales') && !['Manager', 'Admin', 'Superuser'].some(role => staffRoles.includes(role))) {
+    window.location.href = `${window.location.origin}/paginated-orders`
+  }
+
   // const { winnersData, loading } = useContext(AppContext);
   const [loading, setLoading] = useState();
   const {handleUnAuth, setIsEditArticle,setArtId,setArtBody,setArtTitle,paginatedArticles,setPaginatedArticles,token, openNotificationWithIcon,setIsOpenPopup, setIsAddArticle} = useContext(AppContext);
@@ -38,7 +43,7 @@ const ArticlesTable = () => {
       setLoading(false);
     });
   }, []);
-  const handleOpenPopup = (id) => {
+  const handleOpenPopup = (/*id*/) => {
     setIsAddArticle(true); 
     setIsOpenPopup(true); 
   };

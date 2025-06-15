@@ -14,6 +14,11 @@ import { FaPen } from "react-icons/fa";
 import { PiStampFill } from "react-icons/pi";
 import { TbRubberStampOff } from "react-icons/tb";
 const NewUnits = () => {
+  const staffRoles = localStorage.getItem('staffRoles');
+  if (staffRoles && staffRoles.includes('Sales') && !['Manager', 'Admin', 'Superuser'].some(role => staffRoles.includes(role))) {
+    window.location.href = `${window.location.origin}/paginated-orders`
+  }
+
   const [paginatedUnits, setPaginatedUnits] = useState();
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState();

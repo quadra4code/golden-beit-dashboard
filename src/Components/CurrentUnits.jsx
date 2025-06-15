@@ -12,6 +12,11 @@ import { FaRegStar } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import { FaPen } from "react-icons/fa";
 const CurrentUnits = () => {
+  const staffRoles = localStorage.getItem('staffRoles');
+  if (staffRoles && staffRoles.includes('Sales') && !['Manager', 'Admin', 'Superuser'].some(role => staffRoles.includes(role))) {
+    window.location.href = `${window.location.origin}/paginated-orders`
+  }
+
   const [paginatedUnits, setPaginatedUnits] = useState();
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState();

@@ -6,6 +6,11 @@ import { FaUserClock } from "react-icons/fa";
 import axios from 'axios';
 import { AppContext } from '../Context/AppContext';
 export const Statics = () => {
+  const staffRoles = localStorage.getItem('staffRoles');
+  if (staffRoles && staffRoles.includes('Sales') && !['Manager', 'Admin', 'Superuser'].some(role => staffRoles.includes(role))) {
+    return;
+  }
+
   const {handleUnAuth, token}= useContext(AppContext)
   const [statics, setStatics] = useState(null);
   const [activeVisitorsCount, setActiveVisitorsCount] = useState(null);

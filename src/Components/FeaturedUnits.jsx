@@ -7,6 +7,11 @@ import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Space, Select } from 'antd';
 import { MdCancel } from "react-icons/md";
 const FeaturedUnits = () => {
+  const staffRoles = localStorage.getItem('staffRoles');
+  if (staffRoles && staffRoles.includes('Sales') && !['Manager', 'Admin', 'Superuser'].some(role => staffRoles.includes(role))) {
+    window.location.href = `${window.location.origin}/paginated-orders`
+  }
+
   const [paginatedUnits, setPaginatedUnits] = useState();
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState();

@@ -8,6 +8,10 @@ import { Button, Dropdown, Space, Select } from 'antd';
 import { BsTrash } from "react-icons/bs";
 import { LuGitPullRequestArrow } from "react-icons/lu";
 const OrdersTable = () => {
+  
+  const staffRoles = localStorage.getItem('staffRoles');
+  const isSalesOnly = staffRoles && staffRoles.includes('Sales') && !['Manager', 'Admin', 'Superuser'].some(role => staffRoles.includes(role))
+
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState();
   const [pagination, setPagination] = useState();
@@ -305,8 +309,8 @@ const OrdersTable = () => {
                     <th>تاريخ الطلب</th>
                     <th>حالة الطلب</th>
                     <th> سبب الرفض</th>
-                    <th>مسؤل المبيعات</th>
-                    <th>الاسم</th>
+                    { isSalesOnly ? null : <th>مسؤل المبيعات</th> }
+                    <th>العميل</th>
                     {/* <th>اسم المستخدم</th>
                     <th>البريد الالكتروني</th>
                     <th>توثيق البريد الالكتروني</th>
@@ -338,17 +342,32 @@ const OrdersTable = () => {
                           />
                         </td>
                         <td>{item.status_msg || '---'} </td>
-                        <td>
-                          <Select
-                            defaultValue={item.sales_obj?.name ||  'غير محدد'}
-                            style={{ width: 120 }}
-                            onChange={(e) => handleChangeSalesStaff(e, item.id)}
-                            options={salesStaff&& salesStaff.map(s => ({
-                              label: s.first_name + ' ' + s.last_name,
-                              value: s.id
-                            }))}
-                          />
-                        </td>
+                        {
+                          isSalesOnly ? null :
+                            <td>
+                              <Select
+                                defaultValue={item.sales_obj?.name || 'غير محدد'}
+                                style={{ width: 120 }}
+                                onChange={(e) => handleChangeSalesStaff(e, item.id)}
+                                options={salesStaff && salesStaff.map(s => ({
+                                  label: s.first_name + ' ' + s.last_name,
+                                  value: s.id
+                              }))}
+                              />
+                          </td>
+                        }
+                        {/* <td>
+                          {isSalesOnly ? ( item.sales_obj?.name ) :
+                            <Select
+                              defaultValue={item.sales_obj?.name || 'غير محدد'}
+                              style={{ width: 120 }}
+                              onChange={(e) => handleChangeSalesStaff(e, item.id)}
+                              options={salesStaff && salesStaff.map(s => ({
+                                label: s.first_name + ' ' + s.last_name,
+                                value: s.id
+                              }))}
+                            />}
+                        </td> */}
                         <td>{item.first_name} {item.last_name}</td>
                         {/* <td>{item.username}</td>
                         <td>{item.email?item.email:'لا يوجد'}</td> */}

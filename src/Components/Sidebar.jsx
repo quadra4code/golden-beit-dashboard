@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 import { MdLogout } from "react-icons/md";
 import logo from '../assets/Images/LOGO-(2).png'
 import { BsBuildings } from "react-icons/bs";
@@ -12,129 +12,188 @@ import { AiOutlinePartition } from "react-icons/ai";
 import { MdOutlineRateReview } from "react-icons/md";
 export const Sidebar = () => {
   const navigate = useNavigate();
-  const handleParentApplicationsData = ()=> {
-    setIsApplication("parentApplications");
-    getParentApplicationsData();
-    setIsParent(true)
-  }
-  const handleStudentApplicationsData = ()=> {
-    setIsApplication("studentApplications");
-    getStudentApplicationsData();
-    setIsParent(false);
-  }
-  const handleContactData = ()=> {
-    setIsApplication("contactUs");
-    getContactData();
-    setIsParent(false);
-  }
-  const handleUsersData = ()=> {
-    setIsApplication("users");
-    getUsersData();
-    setIsParent(false);
-  }
-  const handleDonationData = (type)=> {
-    setIsApplication("donations");
-    type === 'one-time'?
-    getDonationsData(true)
-    :
-    getDonationsData(false);
-    setIsParent(false);
-  }
+  // const handleParentApplicationsData = ()=> {
+  //   setIsApplication("parentApplications");
+  //   getParentApplicationsData();
+  //   setIsParent(true)
+  // }
+  // const handleStudentApplicationsData = ()=> {
+  //   setIsApplication("studentApplications");
+  //   getStudentApplicationsData();
+  //   setIsParent(false);
+  // }
+  // const handleContactData = ()=> {
+  //   setIsApplication("contactUs");
+  //   getContactData();
+  //   setIsParent(false);
+  // }
+  // const handleUsersData = ()=> {
+  //   setIsApplication("users");
+  //   getUsersData();
+  //   setIsParent(false);
+  // }
+  // const handleDonationData = (type)=> {
+  //   setIsApplication("donations");
+  //   type === 'one-time'?
+  //   getDonationsData(true)
+  //   :
+  //   getDonationsData(false);
+  //   setIsParent(false);
+  // }
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('staffRoles');
     window.location.href = `${window.location.origin}/login`
   };
-  const items = [
-    {
-      key: 'sub1',
-      label: 'الموارد البشرية',
-      icon: <BsClipboardData />,
-      children: [
+  const getMenuItems = () => {
+    const staffRoles = localStorage.getItem('staffRoles');
+    
+    const allMenuItems = {
+      salesMenu: [
         {
-          key: '1',
-          label: 'الموظفين',
+          key: '7',
+          icon: <AiOutlinePullRequest />,
+          label: 'إدارة الطلبات',
         },
-        {
-          key: '2',
-          label: 'العملاء',
-        }
       ],
-    },
-    {
-      key: 'sub2',
-      label: 'إدارة الوحدات ',
-      icon: <BsClipboardData />,
-      children: [
+      adminMenu: [
         {
-          key: '3',
-          label: 'الوحدات الجديدة',
+          key: 'sub1',
+          label: 'الموارد البشرية',
+          icon: <BsClipboardData />,
+          children: [
+            { key: '1', label: 'الموظفين' },
+            { key: '2', label: 'العملاء' }
+          ],
         },
         {
-          key: '4',
-          label: 'الوحدات الحالية',
+          key: 'sub2',
+          label: 'إدارة الوحدات ',
+          icon: <BsClipboardData />,
+          children: [
+            { key: '3', label: 'الوحدات الجديدة' },
+            { key: '4', label: 'الوحدات الحالية' },
+            { key: '5', label: 'الوحدات المميزة' },
+            { key: '6', label: 'الوحدات المحذوفة' }
+          ],
         },
-        {
-          key: '5',
-          label: 'الوحدات المميزة',
-        },
-        {
-          key: '6',
-          label: 'الوحدات المحذوفة',
-        }
-      ],
-    },
-    // {
-    //   key: '3',
-    //   icon: <BsBuildings />,
-    //   label: 'إدارة  الوحدات',
-    //   // onClick	:handleContactData
-    // },
-    {
-      key: '7',
-      icon: <AiOutlinePullRequest />,
-      label: 'إدارة الطلبات',
-      // onClick	:handleContactData
-    },
-    {
-      key: '8',
-      icon: <GrArticle />,
-      label: 'إدارة  المقالات',
-      // onClick	:handleContactData
-    },
-    {
-      key: '9',
-      icon: <AiOutlinePartition />,
-      label: 'إدارة  الاستشارات',
-      // onClick	:handleContactData
-    },
-    {
-      key: '10',
-      icon: <MdOutlineRateReview />,
-      label: 'إدارة  التقييمات',
-      // onClick	:handleContactData
-    },
-    {
-      key: '11',
-      icon: <MailOutlined />,
-      label: 'إدارة رسائل التواصل',
-      // onClick	:handleContactData
-    },
-    {
+        { key: '7', icon: <AiOutlinePullRequest />, label: 'إدارة  الطلبات' },
+        { key: '8', icon: <GrArticle />, label: 'إدارة  المقالات' },
+        { key: '9', icon: <AiOutlinePartition />, label: 'إدارة  الاستشارات' },
+        { key: '10', icon: <MdOutlineRateReview />, label: 'إدارة  التقييمات' },
+        { key: '11', icon: <MailOutlined />, label: 'إدارة رسائل التواصل' },
+      ]
+    };
+
+    const logoutItem = {
       key: '12',
       icon: <MdLogout />,
       label: 'Log Out',
-      // onClick	:handleLogout
-    },
-  ];
-  const [openKeys, setOpenKeys] = useState(['sub1']); // Default open submenu
-  const onOpenChange = (keys) => {
-    const latestOpenKey = keys.find(key => openKeys.indexOf(key) === -1);
-    if (latestOpenKey) {
-      setOpenKeys([latestOpenKey]);
-    } else {
-      setOpenKeys([]);
-    }
+    };
+
+    const isSalesOnly = staffRoles && 
+      staffRoles.includes('Sales') && 
+      !['Manager', 'Admin', 'Superuser'].some(role => staffRoles.includes(role));
+
+    return [
+      ...(isSalesOnly ? allMenuItems.salesMenu : allMenuItems.adminMenu),
+      logoutItem
+    ];
   };
+
+  const items = getMenuItems();
+
+  // const itemss = [
+  //   {
+  //     key: 'sub1',
+  //     label: 'الموارد البشرية',
+  //     icon: <BsClipboardData />,
+  //     children: [
+  //       {
+  //         key: '1',
+  //         label: 'الموظفين',
+  //       },
+  //       {
+  //         key: '2',
+  //         label: 'العملاء',
+  //       }
+  //     ],
+  //   },
+  //   {
+  //     key: 'sub2',
+  //     label: 'إدارة الوحدات ',
+  //     icon: <BsClipboardData />,
+  //     children: [
+  //       {
+  //         key: '3',
+  //         label: 'الوحدات الجديدة',
+  //       },
+  //       {
+  //         key: '4',
+  //         label: 'الوحدات الحالية',
+  //       },
+  //       {
+  //         key: '5',
+  //         label: 'الوحدات المميزة',
+  //       },
+  //       {
+  //         key: '6',
+  //         label: 'الوحدات المحذوفة',
+  //       }
+  //     ],
+  //   },
+  //   // {
+  //   //   key: '3',
+  //   //   icon: <BsBuildings />,
+  //   //   label: 'إدارة  الوحدات',
+  //   //   // onClick	:handleContactData
+  //   // },
+  //   {
+  //     key: '7',
+  //     icon: <AiOutlinePullRequest />,
+  //     label: 'إدارة الطلبات',
+  //     // onClick	:handleContactData
+  //   },
+  //   {
+  //     key: '8',
+  //     icon: <GrArticle />,
+  //     label: 'إدارة  المقالات',
+  //     // onClick	:handleContactData
+  //   },
+  //   {
+  //     key: '9',
+  //     icon: <AiOutlinePartition />,
+  //     label: 'إدارة  الاستشارات',
+  //     // onClick	:handleContactData
+  //   },
+  //   {
+  //     key: '10',
+  //     icon: <MdOutlineRateReview />,
+  //     label: 'إدارة  التقييمات',
+  //     // onClick	:handleContactData
+  //   },
+  //   {
+  //     key: '11',
+  //     icon: <MailOutlined />,
+  //     label: 'إدارة رسائل التواصل',
+  //     // onClick	:handleContactData
+  //   },
+  //   {
+  //     key: '12',
+  //     icon: <MdLogout />,
+  //     label: 'Log Out',
+  //     // onClick	:handleLogout
+  //   },
+  // ];
+  // const [openKeys, setOpenKeys] = useState(['sub1']); // Default open submenu
+  // const onOpenChange = (keys) => {
+  //   const latestOpenKey = keys.find(key => openKeys.indexOf(key) === -1);
+  //   if (latestOpenKey) {
+  //     setOpenKeys([latestOpenKey]);
+  //   } else {
+  //     setOpenKeys([]);
+  //   }
+  // };
   const onClick = (e) => {
     console.log('click ', e);
     if(e.key === '12'){

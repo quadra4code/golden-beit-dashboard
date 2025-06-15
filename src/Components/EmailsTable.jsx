@@ -9,6 +9,11 @@ import { IoMdDoneAll } from "react-icons/io";
 import { BsTrash } from "react-icons/bs";
 
 const EmailsTable = () => {
+  const staffRoles = localStorage.getItem('staffRoles');
+  if (staffRoles && staffRoles.includes('Sales') && !['Manager', 'Admin', 'Superuser'].some(role => staffRoles.includes(role))) {
+    window.location.href = `${window.location.origin}/paginated-orders`
+  }
+
   const [paginatedEmails, setPaginatedEmails] = useState();
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState();

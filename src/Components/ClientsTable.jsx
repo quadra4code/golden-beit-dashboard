@@ -7,6 +7,11 @@ import { Button, Dropdown, message, Space } from 'antd';
 import { BsTrash } from "react-icons/bs";
 import axios from 'axios';
 const ClientsTable = () => {
+  const staffRoles = localStorage.getItem('staffRoles');
+  if (staffRoles && staffRoles.includes('Sales') && !['Manager', 'Admin', 'Superuser'].some(role => staffRoles.includes(role))) {
+    window.location.href = `${window.location.origin}/paginated-orders`
+  }
+
   // const { winnersData, loading } = useContext(AppContext);
   const [paginatedClients, setPaginatedClients] = useState();
   const [searchTerm, setSearchTerm] = useState('');
