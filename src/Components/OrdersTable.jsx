@@ -170,45 +170,6 @@ const OrdersTable = () => {
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
   };
-  const handleHideUnit = (id) => {
-    axios
-    .get(`https://api.goldenbeit.com/dashboard/toggle-unit-hide/${id}`,
-      {headers: { 'Authorization': `Bearer ${token}` },}
-    )
-    .then((res) => {
-      console.log(res.data);
-      setPaginatedOrders(prevUnit =>
-        prevUnit.map(item =>
-          item.id === id ? { ...item, hidden: !item.hidden } : item
-        )
-      );
-      openNotificationWithIcon('success',`${res.data.msg}`)
-    })
-    .catch((err) => {
-      if(err.status===401){
-        handleUnAuth()
-      }
-      console.log(err);
-      openNotificationWithIcon('error',`${err.response.data.msg}`)
-    })
-  };
-  const handleGetUnitReq = (id) => {
-    axios
-    .get(`https://api.goldenbeit.com/dashboard/unit-requests-user/${id}`,
-      {headers: { 'Authorization': `Bearer ${token}` },}
-    )
-    .then((res) => {
-      console.log(res.data);
-      setUnitRequests(res.data.data);
-    })
-    .catch((err) => {
-      if(err.status===401){
-        handleUnAuth()
-      }
-      console.log(err);
-      openNotificationWithIcon('error',`${err.response.data.msg}`)
-    })
-  };
   const handleChangeSalesStaff = (sales_id, order_id) => {
     axios
     .post('https://api.goldenbeit.com/dashboard/assign-sales-request', 
@@ -264,6 +225,38 @@ const OrdersTable = () => {
   //     });
   // };
   // handleModalOk and handleModalCancel are now provided by context
+  useEffect(() => {
+    if (isSalesOnly) {
+      const interval = setInterval(() => {
+        axios
+          .post('https://api.goldenbeit.com/dashboard/paginated-requests',
+            {
+              status_id: statusFilter,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              }
+            }
+          )
+          .then((res) => {
+            console.log(res.data);
+            setPaginatedOrders(res.data.data.all);
+            setUnitStatuses(res.data.data.request_statuses);
+            setPagination(res.data.data.pagination);
+          })
+          .catch((err) => {
+            if (err.status === 401) {
+              handleUnAuth();
+            }
+            console.log(err);
+          });
+      }, 300000); // 60000 ms = 1 minute * 5 = 300000 ms = 5 minutes
+
+      return () => clearInterval(interval);
+    }
+  }, [isSalesOnly, statusFilter, token]);
+  
   return (
     <>
       {loading ? (
