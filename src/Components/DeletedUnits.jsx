@@ -267,6 +267,8 @@ const DeletedUnits = () => {
                     <th>عنوان الوحدة</th>
                     <th>الاوفر</th>
                     <th>الاجمالى</th>
+                    <th>اسم العميل</th>
+                    <th>رقم الهاتف</th>
                     <th>اخر تحديث</th>
                     {/* <th>عدد الطلبات</th> */}
                     {/* <th>حالة الوحدة</th> */}
@@ -285,7 +287,9 @@ const DeletedUnits = () => {
                         <td>{item.title}</td>
                         <td>{item.over_price_obj.price_value}</td>
                         <td>{item.total_price_obj.price_value}</td>
-                        <td>{item.updated_at}</td>
+                        <td>{item.created_by_obj.full_name}</td>
+                        <td>{item.created_by_obj.phone_number}</td>
+                        <td>{item.upated_at}</td>
                         {/* <td>{item.requests_count}</td> */}
                         {/* <td>{item.status_obj.name}</td> */}
                         {/* <td>
