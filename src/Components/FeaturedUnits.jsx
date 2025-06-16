@@ -138,8 +138,10 @@ const FeaturedUnits = () => {
                     <th>الاوفر</th>
                     <th>الاجمالى</th>
                     <th>عدد الطلبات</th>
-                    <th>اخر تحديث</th>
                     <th>حالة الوحدة</th>
+                    <th>اسم العميل</th>
+                    <th>رقم الهاتف</th>
+                    <th>اخر تحديث</th>
                     {/* <th>الظهور</th> */}
                     <th>خيارات</th>
                   </tr>
@@ -159,6 +161,9 @@ const FeaturedUnits = () => {
                         <td>{item.over_price_obj.price_value}</td>
                         <td>{item.total_price_obj.price_value}</td>
                         <td>{item.requests_count}</td>
+                        <td>{item.created_by_obj.full_name}</td>
+                        <td>{item.created_by_obj.phone_number}</td>
+                        <td>{item.status_obj.name}</td>
                         <td>{item.updated_at}</td>
                         {/* <td>
                           <Select
@@ -170,7 +175,6 @@ const FeaturedUnits = () => {
                             options={unitStatuses}
                           />
                         </td> */}
-                        <td>{item.status_obj.name}</td>
                         {/* <td>{item.hidden? 'مخفي': 'ظاهر'}</td> */}
                         <td>
                           <Dropdown menu={menuProps(item.id)}>

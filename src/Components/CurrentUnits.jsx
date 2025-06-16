@@ -308,6 +308,8 @@ const CurrentUnits = () => {
                     <th>رقم العمارة</th>
                     <th>عدد الطلبات</th>
                     <th>حالة الوحدة</th>
+                    <th>اسم العميل</th>
+                    <th>رقم الهاتف</th>
                     <th>اخر تحديث</th>
                     {/* <th>الظهور</th> */}
                     <th>خيارات</th>
@@ -340,6 +342,8 @@ const CurrentUnits = () => {
                             options={unitStatuses}
                           />
                         </td>
+                        <td>{item.created_by_obj.full_name}</td>
+                        <td>{item.created_by_obj.phone_number}</td>
                         <td>{item.updated_at}</td>
                         {/* <td>{item.hidden? 'مخفي': 'ظاهر'}</td> */}
                         <td>
