@@ -172,11 +172,11 @@ const ClientsTable = () => {
                     <th>البريد الإلكتروني</th>
                     <th>أرقام الهاتف</th>
                     <th>كود الدعوة</th>
-                    <th>الصلاحية</th>
+                    {/* <th>الصلاحية</th> */}
                     <th>توثيق الايميل</th>
                     <th>حالة الحساب</th>
                     <th>اّخر دخول</th>
-                    <th>تاريخ الدخول</th>
+                    <th>تاريخ التسجيل</th>
                     <th>خيارات</th>
                   </tr>
                 </thead>
@@ -187,20 +187,20 @@ const ClientsTable = () => {
                         <td>{item.id}</td>
                         <td>{item.first_name} {item.last_name}</td>
                         <td>{item.username}</td>
-                        <td>{item.email?item.email:'لا يوجد'}</td>
+                        <td>{item.email?item.email:'-----'}</td>
                         <td>{item.phone_numbers_list.length>0?
                           item.phone_numbers_list.map((phone)=>
                           <><span key={phone.phone_number_id}>
                               {phone.phone_number} {phone.phone_number_confirmed?'موثق':'غير موثق'}
                             </span> <br/>
-                          </>):'لا يوجد'}
+                          </>):'-----'}
                         </td>
                         <td>{item.referral_code}</td>
-                        <td>{item.role?item.role:'لا يوجد'}</td>
+                        {/* <td>{item.role?item.role:'-----'}</td> */}
                         <td>{item.email_confirmed? 'موثق': 'غير موثق'}</td>
                         <td>{item.is_active? 'مفعل': 'غير مفعل'}</td>
-                        <td>{item.last_login?item.last_login:'لا يوجد'}</td>
-                        <td>{item.date_joined?item.date_joined:'لا يوجد'}</td>
+                        <td>{item.last_login?item.last_login:'-----'}</td>
+                        <td>{item.date_joined?item.date_joined:'-----'}</td>
                         <td>
                           <Dropdown menu={menuProps(item.id)}>
                             <Button>
