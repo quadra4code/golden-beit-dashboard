@@ -58,7 +58,7 @@ const AppProvider = ({children}) => {
         first_name,
         last_name,
         username,
-        email,
+        email == "" ? null : email,
         role_name
       },
       {headers: { 'Authorization': `Bearer ${token}` },}
