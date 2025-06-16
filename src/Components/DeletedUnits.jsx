@@ -289,7 +289,7 @@ const DeletedUnits = () => {
                         <td>{item.total_price_obj.price_value}</td>
                         <td>{item.created_by_obj.full_name}</td>
                         <td>{item.created_by_obj.phone_number}</td>
-                        <td>{item.upated_at}</td>
+                        <td>{item.updated_at}</td>
                         {/* <td>{item.requests_count}</td> */}
                         {/* <td>{item.status_obj.name}</td> */}
                         {/* <td>
