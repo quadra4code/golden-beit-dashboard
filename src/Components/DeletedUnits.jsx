@@ -265,6 +265,11 @@ const DeletedUnits = () => {
                   <tr>
                     <th>المسلسل</th>
                     <th>عنوان الوحدة</th>
+                    <th>النوع</th>
+                    <th>المشروع</th>
+                    <th>المدينة</th>
+                    <th>رقم الوحدة</th>
+                    <th>رقم العمارة</th>
                     <th>الاوفر</th>
                     <th>الاجمالى</th>
                     <th>اسم العميل</th>
@@ -285,6 +290,11 @@ const DeletedUnits = () => {
                           {/* {item.id} */}
                         </td>
                         <td>{item.title}</td>
+                        <td>{item.unit_type}</td>
+                        <td>{item.project}</td>
+                        <td>{item.city}</td>
+                        <td>{item.unit_number}</td>
+                        <td>{item.building_number ? item.building_number : "----"}</td>
                         <td>{item.over_price_obj.price_value}</td>
                         <td>{item.total_price_obj.price_value}</td>
                         <td>{item.created_by_obj.full_name}</td>
