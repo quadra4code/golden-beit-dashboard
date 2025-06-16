@@ -236,7 +236,7 @@ const StaffTable = () => {
                     <th>توثيق الايميل</th>
                     <th>حالة الحساب</th>
                     <th>اّخر دخول</th>
-                    <th>تاريخ الدخول</th>
+                    <th>تاريخ التسجيل</th>
                     <th>خيارات</th>
                   </tr>
                 </thead>
@@ -269,8 +269,8 @@ const StaffTable = () => {
                         {/* <td>{item.role}</td> */}
                         <td>{item.email_confirmed? 'موثق': 'غير موثق'}</td>
                         <td>{item.is_active? 'مفعل': 'غير مفعل'}</td>
-                        <td>{item.last_login}</td>
-                        <td>{item.date_joined}</td>
+                        <td>{item.last_login ? item.last_login : "-----"}</td>
+                        <td>{item.date_joined ? item.date_joined : "-----"}</td>
                         <td>
                           <Dropdown menu={menuProps(item.id)}>
                             <Button>
