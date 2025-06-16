@@ -254,7 +254,7 @@ const StaffTable = () => {
                             </span> <br/>
                           </>):'لا يوجد'}
                         </td>
-                        <td>{item.email}</td>
+                        <td>{item.email ? item.email : "-----"}</td>
                         <td>
                           <Select
                             defaultValue={item.role}
