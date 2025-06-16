@@ -324,7 +324,7 @@ const NewUnits = () => {
                         <td>{item.is_approved === null ? 'في انتظار المراجعة' : 'مرفوضة' }</td>
                         <td>{item.approver_message === null ? '-----' : item.approver_message }</td>
                         <td>{item.created_by_obj.full_name}</td>
-                        <td>{item.created_by_obj.username}</td>
+                        <td>{item.created_by_obj.phone_number}</td>
                         <td>{item.created_at}</td>
                         {/* <td>{item.status_obj.name}</td> */}
                         {/* <td>
