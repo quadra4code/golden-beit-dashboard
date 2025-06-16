@@ -301,8 +301,11 @@ const NewUnits = () => {
                     <th>عنوان الوحدة</th>
                     <th>الاوفر</th>
                     <th>الاجمالى</th>
+                    <th>حالة القبول</th>
+                    <th>سبب الرفض</th>
+                    <th>اسم العميل</th>
+                    <th>رقم الهاتف</th>
                     <th>تاريخ الإضافة</th>
-                    <th>حالة الوحدة</th>
                     {/* <th>الظهور</th> */}
                     <th>خيارات</th>
                   </tr>
@@ -318,8 +321,11 @@ const NewUnits = () => {
                         <td>{item.title}</td>
                         <td>{item.over_price_obj.price_value}</td>
                         <td>{item.total_price_obj.price_value}</td>
-                        <td>{item.created_at}</td>
                         <td>{item.is_approved === null ? 'في انتظار المراجعة' : 'مرفوضة' }</td>
+                        <td>{item.approver_message === null ? '-----' : item.approver_message }</td>
+                        <td>{item.created_by_obj.full_name}</td>
+                        <td>{item.created_by_obj.username}</td>
+                        <td>{item.created_at}</td>
                         {/* <td>{item.status_obj.name}</td> */}
                         {/* <td>
                           <Select
