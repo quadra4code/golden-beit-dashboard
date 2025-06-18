@@ -301,11 +301,13 @@ const CurrentUnits = () => {
                     <th>عنوان الوحدة</th>
                     {/* <th>الاجمالى</th> */}
                     <th>النوع</th>
+                    <th>الطرح</th>
                     <th>المشروع</th>
                     <th>المدينة</th>
                     <th>الاوفر</th>
                     <th>رقم الوحدة</th>
                     <th>رقم العمارة</th>
+                    <th>الدور</th>
                     <th>عدد الطلبات</th>
                     <th>حالة الوحدة</th>
                     <th>اسم العميل</th>
@@ -326,11 +328,13 @@ const CurrentUnits = () => {
                         <td>{item.title}</td>
                         {/* <td>{item.total_price_obj.price_value}</td> */}
                         <td>{item.unit_type}</td>
+                        <td>{item.proposal_str ? item.proposal_str : "-----"}</td>
                         <td>{item.project}</td>
                         <td>{item.city}</td>
                         <td>{item.over_price_obj.price_value}</td>
                         <td>{item.unit_number}</td>
                         <td>{item.building_number ? item.building_number : "----"}</td>
+                        <td>{item.floor ? item.floor : "----"}</td>
                         <td>{item.requests_count}</td>
                         <td>
                           <Select
