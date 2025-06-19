@@ -105,6 +105,19 @@ export const Sidebar = () => {
 
   const items = getMenuItems();
 
+  const onClick = (e) => {
+    if (e.key === '13') {
+      handleLogout();
+    } else {
+      // Find the item with the matching key and route
+      const item = items.find(item => item.key === e.key || (item.children && item.children.find(child => child.key === e.key)));
+      if (item && item.route) {
+        navigate(item.route);
+      } else {
+        navigate('/');
+      }
+    }
+  };
   // const itemss = [
   //   {
   //     key: 'sub1',
@@ -196,56 +209,52 @@ export const Sidebar = () => {
   //     setOpenKeys([]);
   //   }
   // };
-  const onClick = (e) => {
-    console.log(e)
-    console.log(e.route)
-    console.log('click ', e);
-    if(e.key === '13'){
-      handleLogout();
-    }
-    else if (e.key && e.route) {
-      navigate(e.route)
-    }
-    else {
-      navigate('/');
-    }
-    // else if(e.key === '1'){
-    //   navigate('paginated-staff');
-    // }
-    // else if(e.key === '2'){
-    //   navigate('paginated-clients');
-    // }
-    // else if(e.key === '3'){
-    //   navigate('paginated-new-units');
-    // }
-    // else if(e.key === '4'){
-    //   navigate('paginated-current-units');
-    // }
-    // else if(e.key === '5'){
-    //   navigate('paginated-featured-units');
-    // }
-    // else if(e.key === '6'){
-    //   navigate('paginated-rejected-units');
-    // }
-    // else if(e.key === '7'){
-    //   navigate('paginated-deleted-units');
-    // }
-    // else if(e.key === '8'){
-    //   navigate('paginated-orders');
-    // }
-    // else if(e.key === '9'){
-    //   navigate('paginated-articles');
-    // }
-    // else if(e.key === '10'){
-    //   navigate('paginated-consultations');
-    // }
-    // else if(e.key === '11'){
-    //   navigate('paginated-reviews');
-    // }
-    // else if(e.key === '12'){
-    //   navigate('paginated-emails');
-    // }
-  };
+
+  // const onClick = (e) => {
+  //   console.log('click ', e);
+  //   if(e.key === '13'){
+  //     handleLogout();
+  //   }
+  //   else if(e.key === '1'){
+  //     navigate('paginated-staff');
+  //   }
+  //   else if(e.key === '2'){
+  //     navigate('paginated-clients');
+  //   }
+  //   else if(e.key === '3'){
+  //     navigate('paginated-new-units');
+  //   }
+  //   else if(e.key === '4'){
+  //     navigate('paginated-current-units');
+  //   }
+  //   else if(e.key === '5'){
+  //     navigate('paginated-featured-units');
+  //   }
+  //   else if(e.key === '6'){
+  //     navigate('paginated-rejected-units');
+  //   }
+  //   else if(e.key === '7'){
+  //     navigate('paginated-deleted-units');
+  //   }
+  //   else if(e.key === '8'){
+  //     navigate('paginated-orders');
+  //   }
+  //   else if(e.key === '9'){
+  //     navigate('paginated-articles');
+  //   }
+  //   else if(e.key === '10'){
+  //     navigate('paginated-consultations');
+  //   }
+  //   else if(e.key === '11'){
+  //     navigate('paginated-reviews');
+  //   }
+  //   else if(e.key === '12'){
+  //     navigate('paginated-emails');
+  //   }
+  //   else {
+  //     navigate('/');
+  //   }
+  // };
   return (
     <section className='sidenav'>
       <div className='logo-holder'>
