@@ -66,6 +66,7 @@ const NewUnits = () => {
       .post('https://api.goldenbeit.com/dashboard/paginated-new-units',
         {
           approval_filter: e,
+          search_keyword: searchTerm
         },
         {
           headers: {
@@ -95,6 +96,7 @@ const NewUnits = () => {
     axios.post('https://api.goldenbeit.com/dashboard/paginated-new-units',
       {
         page_number:pageNumber,
+        search_keyword: searchTerm,
         approval_filter: approvalFilter
       },
       {
@@ -122,7 +124,35 @@ const NewUnits = () => {
   };
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
-    setCurrentPage(1); 
+    // setCurrentPage(1);
+    axios.post('https://api.goldenbeit.com/dashboard/paginated-new-units',
+      {
+        approval_filter: approvalFilter
+        search_keyword: event.target.value
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
+    )
+      .then(res => {
+        // console.log(res.data);
+        setPaginatedUnits(res.data.data.all);
+        setPagination(res.data.data.pagination)
+        setCurrentPage(res.data.data.pagination.current_page)
+      })
+      .catch(err => {
+        if(err.status===401){
+          handleUnAuth()
+        }  
+        console.log(err);
+        // setCurrentPage(1);
+      })
+      .finally(() => {
+        // setLoading(false)
+      }
+      );
   };
   // const filteredData = paginatedUnits && paginatedUnits.filter(item =>
   //   item.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -341,7 +371,7 @@ const NewUnits = () => {
                 type="text"
                 value={searchTerm}
                 onChange={handleSearch}
-                placeholder="ابحث باسمك ..."
+                placeholder="ابحث ..."
               />
               <Select
                 defaultValue="الكل"
