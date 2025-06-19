@@ -120,6 +120,8 @@ const CurrentUnits = () => {
   };
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
+    console.log(event.target.value);
+    console.log(searchTerm);
     // setLoading(true);
     axios.post('https://api.goldenbeit.com/dashboard/paginated-units',
       {
