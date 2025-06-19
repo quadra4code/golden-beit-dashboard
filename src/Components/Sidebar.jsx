@@ -197,6 +197,8 @@ export const Sidebar = () => {
   //   }
   // };
   const onClick = (e) => {
+    console.log(e)
+    console.log(e.route)
     console.log('click ', e);
     if(e.key === '13'){
       handleLogout();
