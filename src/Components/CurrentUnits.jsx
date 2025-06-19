@@ -119,12 +119,12 @@ const CurrentUnits = () => {
     setCurrentPage(pageNumber)
   };
   const handleSearch = (event) => {
-    // setSearchTerm(event.target.value);
+    setSearchTerm(event.target.value);
     // setLoading(true);
     axios.post('https://api.goldenbeit.com/dashboard/paginated-units',
       {
         status_id: statusFilter,
-        search_keyword: event.target.value
+        search_keyword: searchTerm ? searchTerm : event.target.value
       },
       {
         headers: {
@@ -310,7 +310,7 @@ const CurrentUnits = () => {
                 type="text"
                 value={searchTerm}
                 onChange={handleSearch}
-                placeholder="ابحث باسمك ..."
+                placeholder="ابحث ..."
               />
               <Select
                 defaultValue="الكل"
