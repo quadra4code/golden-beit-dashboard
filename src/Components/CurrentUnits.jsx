@@ -64,6 +64,7 @@ const CurrentUnits = () => {
     .post('https://api.goldenbeit.com/dashboard/paginated-units',
       {
         status_id: e,
+        search_keyword: searchTerm
       },
       {
         headers: {
@@ -93,7 +94,8 @@ const CurrentUnits = () => {
     axios.post('https://api.goldenbeit.com/dashboard/paginated-units',
       {
         page_number:pageNumber,
-        status_id: statusFilter
+        status_id: statusFilter,
+        search_keyword: searchTerm
       },
       {
         headers: {
