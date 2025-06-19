@@ -13,6 +13,7 @@ import { FaStar } from "react-icons/fa";
 import { FaPen } from "react-icons/fa";
 import { PiStampFill } from "react-icons/pi";
 import { TbRubberStampOff } from "react-icons/tb";
+import { IoReturnUpForward } from "react-icons/io5";
 const NewUnits = () => {
   const staffRoles = localStorage.getItem('staffRoles');
   if (staffRoles && staffRoles.includes('Sales') && !['Manager', 'Admin', 'Superuser'].some(role => staffRoles.includes(role))) {
@@ -31,7 +32,7 @@ const NewUnits = () => {
   useEffect(() => {
     setLoading(true);
     axios
-    .post('https://api.goldenbeit.com/dashboard/paginated-new-units',
+    .post('https://api.goldenbeit.com/dashboard/paginated-rejected-units',
       {},
       {
         headers: {
@@ -56,42 +57,10 @@ const NewUnits = () => {
       setLoading(false);
     });
   }, []);
-  const handleFilterBy = (e) => {
-      console.log(e);
-      setStatusFilter(e);
-      setPaginatedUnits([]);
-      setLoading(true);
-      axios
-      .post('https://api.goldenbeit.com/dashboard/paginated-new-units',
-        {
-          approval_filter: e,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          }
-        }
-      ).then((res) => {
-        console.log(res.data);
-        setPaginatedUnits(res.data.data.all);
-        // setUnitStatuses(res.data.data.statuses);
-        setPagination(res.data.data.pagination);
-        setLoading(false);
-      })
-      .catch((err) => { 
-        if(err.status===401){
-          handleUnAuth()
-        }
-        console.log(err);
-      })
-      .finally(() => {  
-        setLoading(false);
-      });
-    }
   console.log(unitStatuses);
   const handlePaginate = (pageNumber) => {
     setLoading(true);
-    axios.post('https://api.goldenbeit.com/dashboard/paginated-new-units',
+    axios.post('https://api.goldenbeit.com/dashboard/paginated-rejected-units',
       {
         page_number:pageNumber
       },
@@ -129,23 +98,6 @@ const NewUnits = () => {
   // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   // const currentItems = filteredData ? filteredData.slice(indexOfFirstItem, indexOfLastItem) : [];
   // const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  const approvalOptions = [
-    {
-      "id": 1,
-      "label": "الكل",
-      "value": null
-    },
-    {
-      "id": 2,
-      "label": "الجديدة فقط",
-      "value": "new_only"
-    },
-    {
-      "id": 3,
-      "label": "السابق رفضهم",
-      "value": "resubmitted"
-    }
-  ]
   const menuProps = (id) => ({
     items: [
       // {
@@ -188,23 +140,62 @@ const NewUnits = () => {
         onClick: () => handleApproveUnit(id),
       },
       {
-        label: 'رفض الوحدة',
+        label: 'إلغاء رفض الوحدة',
         key: '2',
-        icon: <TbRubberStampOff />,
-        onClick: () => handleDisApproveUnit(id),
+        icon: <IoReturnUpForward />,
+        onClick: () => handleResetUnitApproval(id),
       },
-      // {
-      //   label: 'حذف الوحدة',
-      //   key: '7',
-      //   icon: <BsTrash />,
-      //   onClick: () => handleDeleteUnit(id),
-      //   danger: true,
-      // },
+      {
+        label: 'حذف الوحدة',
+        key: '3',
+        icon: <BsTrash />,
+        onClick: () => handleDeleteUnit(id),
+        danger: true,
+      },
     ],
   });
+
+    const handleApproveUnit = (id) => {
+      axios
+      .get(`https://api.goldenbeit.com/dashboard/approve-unit/${id}`,
+        {headers: { 'Authorization': `Bearer ${token}` },}
+      )
+      .then((res) => {
+        console.log(res.data);
+        setPaginatedUnits(paginatedUnits.filter((item) => item.id !== id))
+        openNotificationWithIcon('success',`${res.data.msg}`)
+      })
+      .catch((err) => {
+        if(err.status===401){
+          handleUnAuth()
+        }
+        console.log(err);
+        openNotificationWithIcon('error',`${err.response.data.msg}`)
+      })
+    };
+
+  const handleResetUnitApproval = (id) => {
+      axios
+      .get(`https://api.goldenbeit.com/dashboard/reset-unit-approval/${id}`,
+        {headers: { 'Authorization': `Bearer ${token}` },}
+      )
+      .then((res) => {
+        console.log(res.data);
+        setPaginatedUnits(paginatedUnits.filter((item) => item.id !== id))
+        openNotificationWithIcon('success',`${res.data.msg}`)
+      })
+      .catch((err) => {
+        if(err.status===401){
+          handleUnAuth()
+        }
+        console.log(err);
+        openNotificationWithIcon('error',`${err.response.data.msg}`)
+      })
+    };
+
   const handleDeleteUnit = (id) => {
     axios
-    .delete(`https://api.goldenbeit.com/core/delete-unit/${id}`,
+    .delete(`https://api.goldenbeit.com/core/toggle-unit-hide//${id}`,
       {headers: { 'Authorization': `Bearer ${token}` },}
     )
     .then((res) => {
@@ -220,6 +211,7 @@ const NewUnits = () => {
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
   };
+
   const handleHideUnit = (id) => {
     axios
     .get(`https://api.goldenbeit.com/dashboard/toggle-unit-hide/${id}`,
@@ -264,69 +256,51 @@ const NewUnits = () => {
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
   };
-  const handleApproveUnit = (id) => {
-    axios
-    .get(`https://api.goldenbeit.com/dashboard/approve-unit/${id}`,
-      {headers: { 'Authorization': `Bearer ${token}` },}
-    )
-    .then((res) => {
-      console.log(res.data);
-      setPaginatedUnits(paginatedUnits.filter((item) => item.id !== id))
-      openNotificationWithIcon('success',`${res.data.msg}`)
-    })
-    .catch((err) => {
-      if(err.status===401){
-        handleUnAuth()
-      }
-      console.log(err);
-      openNotificationWithIcon('error',`${err.response.data.msg}`)
-    })
-  }
-  const handleDisApproveUnit = (id) => {
-    setModalType('units');
-    setIsModalOpen(true);
-    setEleId(id);
-  }
-  const handleGetUnitReq = (id) => {
-    axios
-    .get(`https://api.goldenbeit.com/dashboard/unit-requests-user/${id}`,
-      {headers: { 'Authorization': `Bearer ${token}` },}
-    )
-    .then((res) => {
-      console.log(res.data);
-      setUnitRequests(res.data.data);
-    })
-    .catch((err) => {
-      if(err.status===401){
-        handleUnAuth()
-      }
-      console.log(err);
-      openNotificationWithIcon('error',`${err.response.data.msg}`)
-    })
-  };
-  const handleChangeUnitStatus = (status_id,item_id) => {
-    console.log(status_id,item_id);
-    axios
-    .get(`https://api.goldenbeit.com/dashboard/update-unit-status/${item_id}/${status_id}`,
-      {headers: { 'Authorization': `Bearer ${token}` },}
-    )
-    .then((res) => {
-      console.log(res.data);
-      setPaginatedUnits(prevUnit =>
-        prevUnit.map(item =>
-          item.id === item_id ? { ...item, status_obj: res.data } : item
-        )
-      );
-      openNotificationWithIcon('success',`${res.data.msg}`)
-    })
-    .catch((err) => {
-      if(err.status===401){
-        handleUnAuth()
-      }
-      console.log(err);
-      openNotificationWithIcon('error',`${err.response.data.msg}`)
-    });
-  };
+  // const handleDisApproveUnit = (id) => {
+  //   setModalType('units');
+  //   setIsModalOpen(true);
+  //   setEleId(id);
+  // }
+  // const handleGetUnitReq = (id) => {
+  //   axios
+  //   .get(`https://api.goldenbeit.com/dashboard/unit-requests-user/${id}`,
+  //     {headers: { 'Authorization': `Bearer ${token}` },}
+  //   )
+  //   .then((res) => {
+  //     console.log(res.data);
+  //     setUnitRequests(res.data.data);
+  //   })
+  //   .catch((err) => {
+  //     if(err.status===401){
+  //       handleUnAuth()
+  //     }
+  //     console.log(err);
+  //     openNotificationWithIcon('error',`${err.response.data.msg}`)
+  //   })
+  // };
+  // const handleChangeUnitStatus = (status_id,item_id) => {
+  //   console.log(status_id,item_id);
+  //   axios
+  //   .get(`https://api.goldenbeit.com/dashboard/update-unit-status/${item_id}/${status_id}`,
+  //     {headers: { 'Authorization': `Bearer ${token}` },}
+  //   )
+  //   .then((res) => {
+  //     console.log(res.data);
+  //     setPaginatedUnits(prevUnit =>
+  //       prevUnit.map(item =>
+  //         item.id === item_id ? { ...item, status_obj: res.data } : item
+  //       )
+  //     );
+  //     openNotificationWithIcon('success',`${res.data.msg}`)
+  //   })
+  //   .catch((err) => {
+  //     if(err.status===401){
+  //       handleUnAuth()
+  //     }
+  //     console.log(err);
+  //     openNotificationWithIcon('error',`${err.response.data.msg}`)
+  //   });
+  // };
   return (
     <>
       {loading ? (
@@ -340,14 +314,6 @@ const NewUnits = () => {
                 value={searchTerm}
                 onChange={handleSearch}
                 placeholder="ابحث باسمك ..."
-              />
-              <Select
-                defaultValue="الكل"
-                style={{
-                  width: 120,
-                }}
-                onChange={(e)=>handleFilterBy(e)}
-                options={approvalOptions}
               />
             </div>
             <div className="table-wrapper">

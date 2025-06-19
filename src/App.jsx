@@ -12,6 +12,7 @@ import ConsultationsTable from './Components/ConsultationsTable';
 import ProtectedRoute from './Components/ProtectedRoute';
 import NewUnits from './Components/NewUnits';
 import CurrentUnits from './Components/CurrentUnits';
+import RejectedUnits from './Components/RejectedUnits';
 import DeletedUnits from './Components/DeletedUnits';
 import ReviewsTable from './Components/ReviewsTable';
 import FeaturedUnits from './Components/FeaturedUnits';
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="paginated-new-units" element={<NewUnits />} />
           <Route path="paginated-current-units" element={<CurrentUnits />} />
           <Route path="paginated-featured-units" element={<FeaturedUnits />} />
+          <Route path="paginated-rejected-units" element={<RejectedUnits />} />
           <Route path="paginated-deleted-units" element={<DeletedUnits />} />
           <Route path="paginated-articles" element={<ArticlesTable />} />
           <Route path="paginated-consultations" element={<ConsultationsTable />} />

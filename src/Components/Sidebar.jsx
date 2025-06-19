@@ -54,6 +54,7 @@ export const Sidebar = () => {
           key: '7',
           icon: <AiOutlinePullRequest />,
           label: 'إدارة الطلبات',
+          route: 'paginated-orders'
         },
       ],
       adminMenu: [
@@ -62,8 +63,8 @@ export const Sidebar = () => {
           label: 'الموارد البشرية',
           icon: <BsClipboardData />,
           children: [
-            { key: '1', label: 'الموظفين' },
-            { key: '2', label: 'العملاء' }
+            { key: '1', label: 'الموظفين', route: "paginated-staff" },
+            { key: '2', label: 'العملاء', route: "paginated-clients" }
           ],
         },
         {
@@ -71,22 +72,23 @@ export const Sidebar = () => {
           label: 'إدارة الوحدات ',
           icon: <BsClipboardData />,
           children: [
-            { key: '3', label: 'الوحدات الجديدة' },
-            { key: '4', label: 'الوحدات الحالية' },
-            { key: '5', label: 'الوحدات المميزة' },
-            { key: '6', label: 'الوحدات المحذوفة' }
+            { key: '3', label: 'الوحدات الجديدة', route: "paginated-new-units" },
+            { key: '4', label: 'الوحدات الحالية', route: "paginated-current-units" },
+            { key: '5', label: 'الوحدات المميزة', route: "paginated-featured-units" },
+            { key: '6', label: 'الوحدات المرفوضة', route: "paginated-rejected-units" },
+            { key: '7', label: 'الوحدات المحذوفة', route: "paginated-deleted-units" }
           ],
         },
-        { key: '7', icon: <AiOutlinePullRequest />, label: 'إدارة  الطلبات' },
-        { key: '8', icon: <GrArticle />, label: 'إدارة  المقالات' },
-        { key: '9', icon: <AiOutlinePartition />, label: 'إدارة  الاستشارات' },
-        { key: '10', icon: <MdOutlineRateReview />, label: 'إدارة  التقييمات' },
-        { key: '11', icon: <MailOutlined />, label: 'إدارة رسائل التواصل' },
+        { key: '8', icon: <AiOutlinePullRequest />, label: 'إدارة  الطلبات', route: "paginated-orders" },
+        { key: '9', icon: <GrArticle />, label: 'إدارة  المقالات', route: "paginated-articles" },
+        { key: '10', icon: <AiOutlinePartition />, label: 'إدارة  الاستشارات', route: "paginated-consultations" },
+        { key: '11', icon: <MdOutlineRateReview />, label: 'إدارة  التقييمات', route: "paginated-reviews" },
+        { key: '12', icon: <MailOutlined />, label: 'إدارة رسائل التواصل', route: "paginated-emails" },
       ]
     };
 
     const logoutItem = {
-      key: '12',
+      key: '13',
       icon: <MdLogout />,
       label: 'Log Out',
     };
@@ -196,45 +198,51 @@ export const Sidebar = () => {
   // };
   const onClick = (e) => {
     console.log('click ', e);
-    if(e.key === '12'){
+    if(e.key === '13'){
       handleLogout();
     }
-    else if(e.key === '1'){
-      navigate('paginated-staff');
+    else if (e.key && e.route) {
+      navigate(e.route)
     }
-    else if(e.key === '2'){
-      navigate('paginated-clients');
-    }
-    else if(e.key === '3'){
-      navigate('paginated-new-units');
-    }
-    else if(e.key === '4'){
-      navigate('paginated-current-units');
-    }
-    else if(e.key === '5'){
-      navigate('paginated-featured-units');
-    }
-    else if(e.key === '6'){
-      navigate('paginated-deleted-units');
-    }
-    else if(e.key === '7'){
-      navigate('paginated-orders');
-    }
-    else if(e.key === '8'){
-      navigate('paginated-articles');
-    }
-    else if(e.key === '9'){
-      navigate('paginated-consultations');
-    }
-    else if(e.key === '10'){
-      navigate('paginated-reviews');
-    }
-    else if(e.key === '11'){
-      navigate('paginated-emails');
-    }
-    else{
+    else {
       navigate('/');
     }
+    // else if(e.key === '1'){
+    //   navigate('paginated-staff');
+    // }
+    // else if(e.key === '2'){
+    //   navigate('paginated-clients');
+    // }
+    // else if(e.key === '3'){
+    //   navigate('paginated-new-units');
+    // }
+    // else if(e.key === '4'){
+    //   navigate('paginated-current-units');
+    // }
+    // else if(e.key === '5'){
+    //   navigate('paginated-featured-units');
+    // }
+    // else if(e.key === '6'){
+    //   navigate('paginated-rejected-units');
+    // }
+    // else if(e.key === '7'){
+    //   navigate('paginated-deleted-units');
+    // }
+    // else if(e.key === '8'){
+    //   navigate('paginated-orders');
+    // }
+    // else if(e.key === '9'){
+    //   navigate('paginated-articles');
+    // }
+    // else if(e.key === '10'){
+    //   navigate('paginated-consultations');
+    // }
+    // else if(e.key === '11'){
+    //   navigate('paginated-reviews');
+    // }
+    // else if(e.key === '12'){
+    //   navigate('paginated-emails');
+    // }
   };
   return (
     <section className='sidenav'>
