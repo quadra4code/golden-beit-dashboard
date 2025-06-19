@@ -120,7 +120,36 @@ const CurrentUnits = () => {
   };
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
-    setCurrentPage(1); 
+    console.log(searchTerm);
+    setLoading(true);
+    axios.post('https://api.goldenbeit.com/dashboard/paginated-units',
+      {
+        status_id: statusFilter,
+        search_keyword: searchTerm
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
+    )
+      .then(res => {
+        console.log(res.data);
+        setPaginatedUnits(res.data.data.all);
+        setPagination(res.data.data.pagination)
+        setCurrentPage(res.data.data.pagination.current_page)
+      })
+      .catch(err => {
+        if(err.status===401){
+          handleUnAuth()
+        }  
+        console.log(err);
+        // setCurrentPage(1);
+      })
+      .finally(() => {
+        setLoading(false)
+      }
+      );
   };
   // const filteredData = paginatedUnits && paginatedUnits.filter(item =>
   //   item.title.toLowerCase().includes(searchTerm.toLowerCase())
