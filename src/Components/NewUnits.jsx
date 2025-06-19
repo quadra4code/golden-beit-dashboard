@@ -127,7 +127,7 @@ const NewUnits = () => {
     // setCurrentPage(1);
     axios.post('https://api.goldenbeit.com/dashboard/paginated-new-units',
       {
-        approval_filter: approvalFilter
+        approval_filter: approvalFilter,
         search_keyword: event.target.value
       },
       {
