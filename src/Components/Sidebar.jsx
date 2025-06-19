@@ -114,7 +114,12 @@ export const Sidebar = () => {
       console.log(item)
       if (item && item.route) {
         navigate(item.route);
-      } else {
+      }
+      else if (item && item.children) {
+        const subItem = item.childred.find(ch => ch.key === e.key);
+        navigate(subItem.route);
+      }
+      else {
         navigate('/');
       }
     }
