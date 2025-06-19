@@ -120,8 +120,10 @@ const CurrentUnits = () => {
   };
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
+    console.log("next is event target value");
+    console.log(event.target.value);
     console.log(searchTerm);
-    setLoading(true);
+    // setLoading(true);
     axios.post('https://api.goldenbeit.com/dashboard/paginated-units',
       {
         status_id: statusFilter,
@@ -147,7 +149,7 @@ const CurrentUnits = () => {
         // setCurrentPage(1);
       })
       .finally(() => {
-        setLoading(false)
+        // setLoading(false)
       }
       );
   };
