@@ -119,15 +119,12 @@ const CurrentUnits = () => {
     setCurrentPage(pageNumber)
   };
   const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-    console.log("next is event target value");
-    console.log(event.target.value);
-    console.log(searchTerm);
+    // setSearchTerm(event.target.value);
     // setLoading(true);
     axios.post('https://api.goldenbeit.com/dashboard/paginated-units',
       {
         status_id: statusFilter,
-        search_keyword: searchTerm
+        search_keyword: event.target.value
       },
       {
         headers: {
@@ -136,7 +133,7 @@ const CurrentUnits = () => {
       }
     )
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         setPaginatedUnits(res.data.data.all);
         setPagination(res.data.data.pagination)
         setCurrentPage(res.data.data.pagination.current_page)
