@@ -23,6 +23,7 @@ const NewUnits = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState();
   const [pagination, setPagination] = useState();
+  const [approvalFilter, setApprovalFilter] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [unitStatuses, setUnitStatuses] = useState();
   const [unitRequests, setUnitRequests] = useState();
@@ -58,7 +59,7 @@ const NewUnits = () => {
   }, []);
   const handleFilterBy = (e) => {
       console.log(e);
-      setStatusFilter(e);
+      setApprovalFilter(e);
       setPaginatedUnits([]);
       setLoading(true);
       axios
@@ -93,7 +94,8 @@ const NewUnits = () => {
     setLoading(true);
     axios.post('https://api.goldenbeit.com/dashboard/paginated-new-units',
       {
-        page_number:pageNumber
+        page_number:pageNumber,
+        approval_filter: approvalFilter
       },
       {
         headers: {
@@ -356,8 +358,15 @@ const NewUnits = () => {
                   <tr>
                     <th>المسلسل</th>
                     <th>عنوان الوحدة</th>
+                    <th>النوع</th>
+                    <th>الطرح</th>
+                    <th>المشروع</th>
+                    <th>المدينة</th>
                     <th>الاوفر</th>
                     <th>الاجمالى</th>
+                    <th>رقم الوحدة</th>
+                    <th>رقم العمارة</th>
+                    <th>الدور</th>
                     <th>حالة القبول</th>
                     <th>سبب الرفض</th>
                     <th>اسم العميل</th>
@@ -376,8 +385,15 @@ const NewUnits = () => {
                           {/* {item.id} */}
                         </td>
                         <td>{item.title}</td>
+                        <td>{item.unit_type}</td>
+                        <td>{item.proposal_str ? item.proposal_str : "-----"}</td>
+                        <td>{item.project}</td>
+                        <td>{item.city}</td>
                         <td>{item.over_price_obj.price_value}</td>
                         <td>{item.total_price_obj.price_value}</td>
+                        <td>{item.unit_number}</td>
+                        <td>{item.building_number ? item.building_number : "----"}</td>
+                        <td>{item.floor ? item.floor : "----"}</td>
                         <td>{item.is_approved === null ? 'في انتظار المراجعة' : 'مرفوضة' }</td>
                         <td>{item.approver_message === null ? '-----' : item.approver_message }</td>
                         <td>{item.created_by_obj.full_name}</td>
