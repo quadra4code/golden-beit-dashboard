@@ -111,12 +111,11 @@ export const Sidebar = () => {
     } else {
       // Find the item with the matching key and route
       const item = items.find(item => item.key === e.key || (item.children && item.children.find(child => child.key === e.key)));
-      console.log(item)
       if (item && item.route) {
         navigate(item.route);
       }
       else if (item && item.children) {
-        const subItem = item.childred.find(ch => ch.key === e.key);
+        const subItem = item.children.find(ch => ch.key === e.key);
         navigate(subItem.route);
       }
       else {
