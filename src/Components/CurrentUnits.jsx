@@ -126,7 +126,7 @@ const CurrentUnits = () => {
     axios.post('https://api.goldenbeit.com/dashboard/paginated-units',
       {
         status_id: statusFilter,
-        search_keyword: searchTerm ? `${searchTerm}${event.target.value}` : event.target.value
+        search_keyword: event.target.value
       },
       {
         headers: {
