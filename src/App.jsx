@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Home from './Pages/Home';
 import StaffTable from './Components/StaffTable';
-import UnitsTable from './Components/UnitsTable';
+// import UnitsTable from './Components/UnitsTable';
 import EmailsTable from './Components/EmailsTable';
 import ClientsTable from './Components/ClientsTable';
 import { Routes, Route, BrowserRouter as Router} from 'react-router-dom';
@@ -16,6 +16,12 @@ import RejectedUnits from './Components/RejectedUnits';
 import DeletedUnits from './Components/DeletedUnits';
 import ReviewsTable from './Components/ReviewsTable';
 import FeaturedUnits from './Components/FeaturedUnits';
+import UnitTypesTable from './Components/UnitTypesTable';
+import ProposalsTable from './Components/ProposalsTable';
+import ProjectsTable from './Components/ProjectsTable';
+import CitiesTable from './Components/CitiesTable';
+import RegionsTable from './Components/RegionsTable';
+import StatusTable from './Components/StatusTable';
 const App = () => {
   return (
     <Router>
@@ -34,6 +40,12 @@ const App = () => {
           <Route path="paginated-orders" element={<OrdersTable />} />
           <Route path="paginated-clients" element={<ClientsTable />} />
           <Route path="paginated-emails" element={<EmailsTable />} />
+          <Route path="all-unit-types" element={<UnitTypesTable />} />
+          <Route path="all-proposals" element={<ProposalsTable />} />
+          <Route path="all-projects" element={<ProjectsTable />} />
+          <Route path="all-cities" element={<CitiesTable />} />
+          <Route path="all-regions" element={<RegionsTable />} />
+          <Route path="all-status" element={<StatusTable />} />
         </Route>
         <Route path='/login' element={<Login/>}/>
       </Routes>

@@ -5,13 +5,13 @@ const Loader = () => {
   return (
     <div className="opacity-div">
       <BarLoader
-        visible={true}
+        visible="true"
         // height="80"
         // width="80"
         color="#8a725d"
-        ariaLabel="triangle-loading"
-        wrapperStyle={{}}
-        wrapperClass=""
+        aria-label="triangle-loading"
+        wrapperstyle={{}}
+        wrapperclass=""
       />
     </div>
   )
