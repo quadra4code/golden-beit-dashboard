@@ -144,10 +144,12 @@ const ArticlesTable = () => {
                 <thead>
                   <tr>
                     <th>المسلسل</th>
+                    <th>صورة المقالة</th>
                     <th>عنوان المقالة</th>
-                    <th>نص المقالة</th>
+                    <th>أساسية</th>
                     <th>تاريخ الانشاء</th>
                     <th>حالة المقالة</th>
+                    <th>نص المقالة</th>
                     <th>خيارات</th>
                   </tr>
                 </thead>
@@ -156,12 +158,26 @@ const ArticlesTable = () => {
                     paginatedArticles.map((item, index) => (
                       <tr key={index}>
                         <td>{item.id}</td>
+                        <td>
+                          {item.image === null ? (
+                            "لا يوجد صورة"
+                            ):
+                            (
+                              <img src={item.image}
+                                alt="article-image"
+                                style={{maxHeight:'50px',maxWidth:'200px',
+                                  borderRadius:'10px'}}/>
+                            )}
+                        </td>
                         <td>{item.title}</td>
-                        <td>{item.body}</td>
+                        <td>
+                          <span className={`state-span ${item.is_main?'still':'done'}`}>{item.is_main? 'غير أساسية': 'أساسية'}</span>
+                        </td>
                         <td>{item.created_at}</td>
                         <td>
                           <span className={`state-span ${item.hidden?'still':'done'}`}>{item.hidden? 'مخفي': 'ظاهر'}</span>
                         </td>
+                        <td>{item.body}</td>
                         <td>
                           <Dropdown menu={menuProps(item.id, item.title, item.body)}>
                             <Button>
