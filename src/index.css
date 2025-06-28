@@ -236,6 +236,39 @@ main.table_page .container .table-wrapper table td .state-span.done {
 main.table_page .container .table-wrapper table td .state-span.still {
   background-color: #2d77d0;
 }
+main.table_page .container .table-wrapper table td .table-btn-ok {
+  border: 1px solid var(--primary-color);
+  color: #333;
+  background-color: #abcfac;
+  margin-inline-end: 0.25rem;
+  padding: 4px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+main.table_page .container .table-wrapper table td .table-btn-ok:hover {
+  background-color: #4caf50;
+  color: white;
+}
+main.table_page .container .table-wrapper table td .table-btn-cancel {
+  border: 1px solid var(--primary-color);
+  color: #333;
+  background-color: #cfabab;
+  padding: 4px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+main.table_page .container .table-wrapper table td .table-btn-cancel:hover {
+  background-color: #dd0000;
+  color: white;
+}
+main.table_page .container .table-wrapper table td .table-input {
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+}
 main.table_page .container .table-wrapper table tr:hover {
   background-color: #f1f1f1;
 }
