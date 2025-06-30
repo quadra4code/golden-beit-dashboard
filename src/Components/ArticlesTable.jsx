@@ -157,7 +157,10 @@ const ArticlesTable = () => {
       .then((res) => {
         setPaginatedArticles(prevArticle =>
           prevArticle.map(item =>
-            item.id === id ? { ...item, image_url: res.data.data.image_url } : item
+            item.id === id ? { ...item, image_url: res.data.data.image_url,
+              updated_at: res.data.data.updated_at,
+              updated_by_name: res.data.data.updated_by_name,
+            } : item
           )
         );
         openNotificationWithIcon('success', `${res.data.msg}`);
