@@ -1,13 +1,15 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import Loader from './Loader';
 import { AppContext } from '../Context/AppContext';
 import axios from 'axios';
 import { DownOutlined,  } from '@ant-design/icons';
 import { Button, Dropdown, Space } from 'antd';
-import { IoMdDoneAll } from "react-icons/io";
 import { BsTrash } from "react-icons/bs";
-import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
+import { FaRegEyeSlash, FaRegEye, FaRegSquareCheck } from "react-icons/fa6";
+import { TbSquareX } from "react-icons/tb";
+import { RiImageEditFill } from "react-icons/ri";
 import { FaPen } from "react-icons/fa";
+import { useRef } from 'react';
 
 const ArticlesTable = () => {
   const staffRoles = localStorage.getItem('staffRoles');
@@ -29,7 +31,7 @@ const ArticlesTable = () => {
       }
     )
     .then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       setPaginatedArticles(res.data.data);
       setLoading(false);
     })
@@ -48,7 +50,7 @@ const ArticlesTable = () => {
     setIsOpenPopup(true); 
   };
   const handleEditArticle = (id,title,body) => {
-    console.log(id,title,body);
+    // console.log(id,title,body);
     
     setArtId(id)
     setArtBody(body)
@@ -84,7 +86,7 @@ const ArticlesTable = () => {
       {headers: { 'Authorization': `Bearer ${token}` }}
     )
     .then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       setPaginatedArticles(prevArticle =>
         prevArticle.map(item =>
           item.id === id ? { ...item, hidden: !item.hidden } : item
@@ -100,31 +102,122 @@ const ArticlesTable = () => {
       openNotificationWithIcon('error',`${err.response.data.msg}`)
     })
   };
+  const toggleArticleMain = (id) => {
+    axios
+    .patch(`https://api.goldenbeit.com/dashboard/toggle-main-article/${id}`,
+      {},
+      {headers: { 'Authorization': `Bearer ${token}` }}
+    )
+    .then((res) => {
+      // console.log(res.data);
+      let articleToChange = paginatedArticles&& paginatedArticles.find((a) => a.id === id)
+      setPaginatedArticles(prevArticle =>
+        prevArticle.map(item =>
+          item.is_main === true && item.id !== id && !articleToChange.is_main ? { ...item, is_main: !item.is_main } : item
+        )
+      );
+      setPaginatedArticles(prevArticle =>
+        prevArticle.map(item =>
+          item.id === id ? { ...item, is_main: !item.is_main } : item
+        )
+      );
+      openNotificationWithIcon('success',`${res.data.msg}`)
+    })
+    .catch((err) => {
+      if(err.status===401){
+        handleUnAuth()
+      }
+      console.log(err);
+      openNotificationWithIcon('error',`${err.response.data.msg}`)
+    })
+  };
+
+  // File input ref for triggering file dialog
+
+  const fileInputRef = useRef(null);
+
+  // Handler for file input change
+  const handleImageChange = (id, event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    // You can now upload the file using FormData and axios
+    const formData = new FormData();
+    formData.append('image', file);
+    axios
+      .put(`https://api.goldenbeit.com/dashboard/update-article/${id}`,
+        formData,
+        { headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } }
+      )
+      .then((res) => {
+        setPaginatedArticles(prevArticle =>
+          prevArticle.map(item =>
+            item.id === id ? { ...item, image_url: res.data.data.image_url } : item
+          )
+        );
+        openNotificationWithIcon('success', `${res.data.msg}`);
+      })
+      .catch((err) => {
+        if (err.status === 401) {
+          handleUnAuth();
+        }
+        openNotificationWithIcon('error', `${err.response?.data?.msg || 'حدث خطأ'}`);
+      });
+  };
+
   const menuProps = (id, title, body) => ({
     items: [
       {
-        label: paginatedArticles&& paginatedArticles.find((item) => item.id === id).hidden
+        label: paginatedArticles && paginatedArticles.find((item) => item.id === id).hidden
           ? 'إظهار المقالة'
           : 'إخفاء المقالة',
-          key: '1',
-        icon: paginatedArticles&& paginatedArticles.find((item) => item.id === id).hidden
+        key: '1',
+        icon: paginatedArticles && paginatedArticles.find((item) => item.id === id).hidden
           ? <FaRegEye />
           : <FaRegEyeSlash />,
-        // icon: <FaRegEyeSlash />,
         onClick: () => handleHideArticle(id),
       },
-      
+      {
+        label: paginatedArticles && paginatedArticles.find((item) => item.id === id).is_main
+          ? 'غير أساسى'
+          : 'أساسى',
+        key: '2',
+        icon: paginatedArticles && paginatedArticles.find((item) => item.id === id).is_main
+          ? <TbSquareX />
+          : <FaRegSquareCheck />,
+        onClick: () => toggleArticleMain(id),
+      },
+      {
+        label: (
+          <span
+            onClick={e => {
+              e.stopPropagation();
+              fileInputRef.current && fileInputRef.current.click();
+            }}
+          >
+            تغيير صورة المقالة
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+              onChange={event => handleImageChange(id, event)}
+            />
+          </span>
+        ),
+        key: '3',
+        icon: <RiImageEditFill />,
+      },
       {
         label: 'تعديل المقالة',
-        key: '2',
+        key: '4',
         icon: <FaPen />,
-        onClick: () => handleEditArticle(id,title,body),
+        onClick: () => handleEditArticle(id, title, body),
       },
       {
         label: 'حذف المقالة ',
-        key: '3',
+        key: '5',
         icon: <BsTrash />,
-        danger:true,
+        danger: true,
         onClick: () => handleDeleteArticle(id),
       },
     ],
@@ -148,6 +241,9 @@ const ArticlesTable = () => {
                     <th>عنوان المقالة</th>
                     <th>أساسية</th>
                     <th>تاريخ الانشاء</th>
+                    <th>اسم المنشئ</th>
+                    <th>آخر تحديث</th>
+                    <th>آخر محدث</th>
                     <th>حالة المقالة</th>
                     <th>نص المقالة</th>
                     <th>خيارات</th>
@@ -159,11 +255,11 @@ const ArticlesTable = () => {
                       <tr key={index}>
                         <td>{item.id}</td>
                         <td>
-                          {item.image === null ? (
+                          {item.image_url === null ? (
                             "لا يوجد صورة"
                             ):
                             (
-                              <img src={item.image}
+                              <img src={item.image_url}
                                 alt="article-image"
                                 style={{maxHeight:'50px',maxWidth:'200px',
                                   borderRadius:'10px'}}/>
@@ -171,9 +267,12 @@ const ArticlesTable = () => {
                         </td>
                         <td>{item.title}</td>
                         <td>
-                          <span className={`state-span ${item.is_main?'still':'done'}`}>{item.is_main? 'غير أساسية': 'أساسية'}</span>
+                          <span className={`state-span ${item.is_main?'done':'still'}`}>{item.is_main? 'أساسية': 'غير أساسية'}</span>
                         </td>
                         <td>{item.created_at}</td>
+                        <td>{item.created_by_name}</td>
+                        <td>{item.updated_at}</td>
+                        <td>{item.updated_by_name}</td>
                         <td>
                           <span className={`state-span ${item.hidden?'still':'done'}`}>{item.hidden? 'مخفي': 'ظاهر'}</span>
                         </td>
@@ -192,7 +291,7 @@ const ArticlesTable = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="5">No data available</td>
+                      <td colSpan="5">لا يوجد مقالات</td>
                     </tr>
                   )}
                 </tbody>

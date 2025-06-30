@@ -168,7 +168,15 @@ const AppProvider = ({children}) => {
       setArtTitle('');
       setIsOpenPopup(false)
       setIsEditArticle(false)
-      setPaginatedArticles(res.data.data)
+      setPaginatedArticles(prevArticle =>
+        prevArticle.map(item =>
+          item.id === ArtId ? { ...item,
+            title: res.data.data.title, body: res.data.data.body,
+            updated_at: res.data.data.updated_at,
+            updated_by_name: res.data.data.updated_by_name,
+          } : item
+        ))
+      // setPaginatedArticles(res.data.data)
       openNotificationWithIcon('success',res.data.msg)
     })
     .catch((err) => {
