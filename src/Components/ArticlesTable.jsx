@@ -89,7 +89,10 @@ const ArticlesTable = () => {
       // console.log(res.data);
       setPaginatedArticles(prevArticle =>
         prevArticle.map(item =>
-          item.id === id ? { ...item, hidden: !item.hidden } : item
+          item.id === id ? { ...item, hidden: !item.hidden,
+            updated_at: res.data.data.updated_at,
+            updated_by_name: res.data.data.updated_by_name,
+          } : item
         )
       );
       openNotificationWithIcon('success',`${res.data.msg}`)
@@ -113,7 +116,10 @@ const ArticlesTable = () => {
       let articleToChange = paginatedArticles&& paginatedArticles.find((a) => a.id === id)
       setPaginatedArticles(prevArticle =>
         prevArticle.map(item =>
-          item.is_main === true && item.id !== id && !articleToChange.is_main ? { ...item, is_main: !item.is_main } : item
+          item.is_main === true && item.id !== id && !articleToChange.is_main ? { ...item, is_main: !item.is_main,
+            updated_at: res.data.data.updated_at,
+            updated_by_name: res.data.data.updated_by_name,
+          } : item
         )
       );
       setPaginatedArticles(prevArticle =>
