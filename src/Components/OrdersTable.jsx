@@ -295,7 +295,8 @@ const OrdersTable = () => {
               <table>
                 <thead>
                   <tr>
-                    <th>المسلسل</th>
+                    <th>رقم الوحدة</th>
+                    <th>رقم الطلب</th>
                     <th>عنوان الوحدة</th>
                     <th>سعر الاوفر</th>
                     {/* <th>إجمالى السعر</th> */}
@@ -317,6 +318,9 @@ const OrdersTable = () => {
                   {paginatedOrders&& paginatedOrders.length > 0 ? (
                     paginatedOrders.map((item, index) => (
                       <tr key={index}>
+                        <td>
+                          <a target="_blank" href={`https://goldenbeit.com/all-units/${item.unit_id}`} className="order-link">#{item.unit_id}</a>
+                        </td>
                         <td>{item.id}</td>
                         <td>{item.title}</td>
                         <td>{item.over_price_obj.price_value} {item.over_price_obj.currency} </td>
